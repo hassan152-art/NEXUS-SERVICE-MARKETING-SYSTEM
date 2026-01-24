@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+}
+@model Payment
+
+<h3>💳 Received Payment</h3>
+
+<div class="alert alert-info">
+    <b>Bill Amount:</b> @ViewBag.BillAmount <br />
+    <b>Total Paid:</b> @ViewBag.TotalPaid <br />
+    <b>Remaining:</b> @ViewBag.Remaining
+</div>
+
+<form asp-action="PayPayement" method="post">
+
+    <input type="hidden" asp-for="BillId" />
+
+    <div class="mb-3">
+        <label class="form-label">Amount Paid</label>
+        <input asp-for="PaidAmount" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Payment Method</label>
+        <select asp-for="PaymentMethod" class="form-select">
+            <option>Cash</option>
+            <option>Online</option>
+            <option>Card</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Remarks</label>
+        <textarea asp-for="Remarks" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">💾 Receiced Payment</button>
+
+    <a asp-action="BillPayment"
+       asp-route-billId="@Model.BillId"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>

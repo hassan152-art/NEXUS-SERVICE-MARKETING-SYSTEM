@@ -1,0 +1,186 @@
+﻿@model List<Vendor>
+@{
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    ViewData["Title"] = "Vendor Management";
+}
+
+<style>
+    /* Card Container */
+    .vendor-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        margin-top: 20px;
+    }
+
+    /* Header Styling */
+    .card-header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    /* Table Styling */
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.8px;
+        padding: 15px 25px;
+        border: none;
+    }
+
+    .table tbody td {
+        padding: 18px 25px;
+        vertical-align: middle;
+        color: #333;
+        border-bottom: 1px solid #f8f9fa;
+    }
+
+    /* Vendor Icon Style */
+    .vendor-icon {
+        width: 40px;
+        height: 40px;
+        background: #fdf2f2; /* Light red tint */
+        color: #d32f2f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        margin-right: 12px;
+        font-size: 1.1rem;
+    }
+
+    /* Action Buttons */
+    .btn-action {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+        border: 1px solid #eee;
+        background: white;
+        text-decoration: none;
+    }
+
+    .btn-edit {
+        color: #f39c12;
+    }
+
+        .btn-edit:hover {
+            background: #f39c12;
+            color: white;
+            border-color: #f39c12;
+        }
+
+    .btn-delete {
+        color: #d32f2f;
+    }
+
+        .btn-delete:hover {
+            background: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+    /* Search Box */
+    .search-box {
+        position: relative;
+        width: 300px;
+    }
+
+        .search-box input {
+            padding-left: 35px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            color: #aaa;
+        }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0">Vendors</h3>
+            <p class="text-muted small mb-0">Manage third-party suppliers and service partners</p>
+        </div>
+        <a href="/Admin/AddVendor" class="btn btn-red px-4">
+            <i class="fa-solid fa-truck-field me-2"></i> Add New Vendor
+        </a>
+    </div>
+
+    <div class="vendor-card">
+        <div class="card-header-flex">
+            <h5 class="mb-0 fw-bold text-secondary">Vendor Directory</h5>
+
+            <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control border-0" placeholder="Filter vendors...">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Vendor Name</th>
+                        <th>Contact Number</th>
+                        <th>Office Address</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var v in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="vendor-icon">
+                                        <i class="fa-solid fa-building-shield"></i>
+                                    </div>
+                                    <span class="fw-bold text-dark">@v.VendorName</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-dark">
+                                    <i class="fa-solid fa-phone-volume text-muted me-2 small"></i>@v.ContactNo
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-muted small">
+                                    <i class="fa-solid fa-location-arrow text-muted me-1"></i> @v.Address
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <a href="/Admin/EditVendor/@v.VendorId" class="btn-action btn-edit" title="Edit Vendor">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+
+                                <a href="/Admin/DeleteVendor/@v.VendorId"
+                                   class="btn-action btn-delete"
+                                   onclick="return confirm('Are you sure you want to remove this vendor?')"
+                                   title="Delete Vendor">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "~/Views/Shared/_Accounts_Layout.cshtml";
+    ViewData["Title"] = "Add Payment";
+}
+@model Payment
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-success text-white rounded p-3 me-3 shadow-sm">
+            <i class="fa-solid fa-money-bill-wave fa-2x"></i>
+        </div>
+        <div>
+            <h3 class="fw-bold mb-0">Record New Payment</h3>
+            <p class="text-muted mb-0">Manage and track transaction details for Bill #@Model.BillId</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm border-radius-lg">
+                <div class="card-body p-4">
+                    <form asp-action="PayPayement" method="post">
+                        <input type="hidden" asp-for="BillId" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Amount Paid</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-dollar-sign text-success"></i></span>
+                                    <input asp-for="PaidAmount" class="form-control border-start-0 ps-0" placeholder="0.00" />
+                                </div>
+                                <span asp-validation-for="PaidAmount" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Payment Method</label>
+                                <select asp-for="PaymentMethod" class="form-select border-radius-md">
+                                    <option value="Cash">💵 Cash</option>
+                                    <option value="Online">🌐 Online Transfer</option>
+                                    <option value="Card">💳 Card Payment</option>
+                                    <option value="Cheque">📄 Cheque</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Remarks / Transaction Reference</label>
+                            <textarea asp-for="Remarks" class="form-control" rows="3" placeholder="Enter any specific details or reference numbers..."></textarea>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success px-4 py-2 fw-bold">
+                                <i class="fa-solid fa-floppy-disk me-2"></i> Save Payment
+                            </button>
+                            <a asp-action="BillPayment" asp-route-billId="@Model.BillId" class="btn btn-outline-secondary px-4 py-2">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-success text-white mb-3">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold border-bottom border-white border-opacity-25 pb-2 mb-3">Bill Summary</h5>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Bill Amount:</span>
+                        <span class="fw-bold">@ViewBag.BillAmount</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Already Paid:</span>
+                        <span class="fw-bold">@ViewBag.TotalPaid</span>
+                    </div>
+                    <hr class="bg-white border-2 border-top border-white opacity-25">
+                    <div class="d-flex justify-content-between">
+                        <span class="fs-5">Remaining Balance:</span>
+                        <span class="fs-4 fw-bold text-warning">@ViewBag.Remaining</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <p class="small text-muted mb-0">
+                        <i class="fa-solid fa-circle-info me-1"></i> Ensure that the payment method matches the actual transaction to avoid reconciliation issues.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Nexus Accounts - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <style>
+        :root {
+            --sidebar-full: 260px;
+            --sidebar-mini: 75px;
+            --nexus-primary: #1d976c; /* Accounts Green */
+            --nexus-dark: #0f172a;
+            --active-bg: #ecfdf5;
+            --border-color: #e2e8f0;
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Public Sans', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--sidebar-full);
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            z-index: 1050;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            will-change: width;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-mini);
+        }
+
+        .sidebar-header {
+            height: 75px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .logo-box {
+            min-width: 35px;
+            height: 35px;
+            background: var(--nexus-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            margin-left: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--nexus-dark);
+            white-space: nowrap;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            transform: translateX(-20px);
+            visibility: hidden;
+        }
+
+        /* --- MENU ITEMS --- */
+        .menu-list {
+            flex-grow: 1;
+            padding: 15px 0;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .menu-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 50px;
+            text-decoration: none;
+            color: #64748b;
+            margin: 4px 0;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .menu-item i {
+            min-width: var(--sidebar-mini);
+            display: flex;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .menu-item span {
+            font-weight: 500;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            opacity: 0;
+            transform: translateX(-15px);
+            visibility: hidden;
+        }
+
+        .menu-item.active {
+            background-color: var(--active-bg) !important;
+            color: var(--nexus-primary) !important;
+            border-left: 4px solid var(--nexus-primary);
+        }
+
+        .menu-item:hover:not(.active) {
+            background-color: #f8fafc;
+            color: var(--nexus-primary);
+        }
+
+        /* --- TOPBAR & CONTENT --- */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-full);
+            right: 0;
+            height: 75px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .sidebar.collapsed ~ .topbar {
+            left: var(--sidebar-mini);
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-full);
+            margin-top: 75px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: var(--sidebar-mini);
+        }
+
+        #toggleBtn {
+            background: #f1f5f9;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--nexus-dark);
+            transition: 0.2s;
+        }
+
+        #toggleBtn:hover {
+            background: var(--nexus-primary);
+            color: white;
+        }
+
+        .logout-section {
+            border-top: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-box"><i class="fa-solid fa-file-invoice"></i></div>
+            <span class="logo-text">Nexus<span>.Acc</span></span>
+        </div>
+
+        <nav class="menu-list">
+            <a asp-controller="Accounts" asp-action="Dashboard" class="menu-item">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Summary Dashboard</span>
+            </a>
+            <a asp-controller="Accounts" asp-action="Orders" class="menu-item">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>Approved Orders</span>
+            </a>
+            <a asp-controller="Accounts" asp-action="BillView" class="menu-item">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Billing Center</span>
+            </a>
+            <a asp-controller="Accounts" asp-action="AllPayments" class="menu-item">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>Transactions</span>
+            </a>
+            <a asp-controller="Accounts" asp-action="Settings" class="menu-item">
+                <i class="fa-solid fa-gears"></i>
+                <span>App Settings</span>
+            </a>
+        </nav>
+
+        <div class="logout-section">
+            <a asp-controller="Home" asp-action="Logout" class="menu-item text-danger">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout Session</span>
+            </a>
+        </div>
+    </aside>
+
+    <header class="topbar justify-content-between">
+        <div class="d-flex align-items-center">
+            <button id="toggleBtn"><i class="fa-solid fa-bars-staggered"></i></button>
+            <h6 class="ms-3 mb-0 fw-bold">Accounts Management</h6>
+        </div>
+        
+        <div class="dropdown">
+            <div class="d-flex align-items-center border-0 bg-transparent shadow-none dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="text-end me-2 d-none d-sm-block">
+                    <p class="mb-0 fw-bold small text-dark">@Context.Session.GetString("UserName")</p>
+                    <small class="text-muted" style="font-size:10px;">Finance Specialist</small>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=@Context.Session.GetString("UserName")&background=1d976c&color=fff" class="rounded-circle" width="35" height="35">
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow mt-2">
+                <li><a class="dropdown-item py-2" asp-action="Settings" asp-controller="Accounts"><i class="fa-solid fa-user-gear me-2 text-muted"></i> Profile Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item py-2 text-danger fw-bold" asp-action="Logout" asp-controller="Home"><i class="fa-solid fa-power-off me-2"></i> Sign Out</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="main-content">
+        @RenderBody()
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const menuLinks = document.querySelectorAll('.menu-item');
+
+        // 1. Sidebar Toggle & LocalStorage Persistent State
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebarState', sidebar.classList.contains('collapsed'));
+        });
+
+        // 2. Active Link Highlight Logic (Integrated)
+        function setActiveLink() {
+            const currentPath = window.location.pathname.toLowerCase();
+            
+            menuLinks.forEach(link => {
+                const href = link.getAttribute('href')?.toLowerCase();
+                link.classList.remove('active');
+
+                if (href && (currentPath === href || (currentPath.includes(href) && href !== "/"))) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Restore Sidebar State
+            if (localStorage.getItem('sidebarState') === 'true') {
+                sidebar.classList.add('collapsed');
+            }
+            setActiveLink();
+        });
+    </script>
+    
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

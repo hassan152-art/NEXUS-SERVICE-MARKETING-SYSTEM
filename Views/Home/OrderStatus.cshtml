@@ -1,0 +1,14 @@
+﻿@model Order
+
+<h2>🔎 Order Status</h2>
+
+<table class="table table-bordered">
+    <tr><th>Order Code</th><td>@Model.OrderCode</td></tr>
+    <tr><th>Name</th><td>@Model.Customer.FullName</td></tr>
+    <tr><th>Plan</th><td>@Model.Plan.PlanName</td></tr>
+    <tr><th>Plan</th><td>@Model.Plan.ConnectionType</td></tr>
+    <tr><th>Status</th><td>@Model.Status</td></tr>
+    <tr><th>Address</th><td>@Model.Customer.Address</td></tr>
+</table>
+
+<a asp-action="MyOrders" class="btn btn-secondary">Back</a>

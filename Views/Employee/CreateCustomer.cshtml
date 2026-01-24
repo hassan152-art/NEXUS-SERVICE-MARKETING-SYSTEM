@@ -1,0 +1,206 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Add Customer";
+}
+@model Customer
+
+<style>
+    /* Main Container with the same spacing as your Admin Card */
+    .form-card-container {
+        max-width: 850px;
+        margin: 20px auto;
+    }
+
+    .custom-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    /* Professional Header matching the Nexus style */
+    .form-header {
+        background: #ffffff;
+        padding: 25px 30px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .form-header h4 {
+            color: #1a237e; /* Navy Blue */
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+    .header-icon {
+        background: #fff5f5;
+        color: #d32f2f;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-size: 1.2rem;
+    }
+
+    /* Form Layout Padding */
+    .form-body {
+        padding: 35px;
+    }
+
+    .form-label {
+        color: #4b5563;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    /* Modern Minimalist Inputs */
+    .form-control {
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        background-color: #fdfdfd;
+        color: #1f2937;
+    }
+
+        .form-control:focus {
+            border-color: #d32f2f;
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+            background-color: #fff;
+            outline: none;
+        }
+
+    /* Custom Textarea for Address */
+    textarea.form-control {
+        min-height: 100px;
+    }
+
+    /* 2-Column Grid Layout */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 0px; /* Managed by grid gap */
+    }
+
+    .full-width {
+        grid-column: span 2;
+    }
+
+    /* Primary Red Submit Button */
+    .btn-save-customer {
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.2s;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .btn-save-customer:hover {
+            background-color: #b71c1c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+            cursor: pointer;
+        }
+
+    .info-hint {
+        color: #9ca3af;
+        font-size: 0.8rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .full-width {
+            grid-column: span 1;
+        }
+
+        .form-body {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="form-card-container">
+    <div class="custom-form-card">
+        <div class="form-header">
+            <div class="header-icon">
+                <i class="fa-solid fa-user-tag"></i>
+            </div>
+            <h4>Add Walk-in Customer</h4>
+        </div>
+
+        <div class="form-body">
+            <form method="post">
+
+                <div class="form-group mb-4">
+                    <label class="form-label">Customer's Full Name</label>
+                    <input name="FullName" class="form-control" placeholder="Enter name" required />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">CNIC Number</label>
+                        <input name="CNIC" type="number" class="form-control" placeholder="42101-XXXXXXX-X" maxlength="15" required />
+                        <span class="info-hint">Use format: XXXXX-XXXXXXX-X</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Contact Number</label>
+                        <input name="ContactNo" type="number" class="form-control" placeholder="+92 3XX XXXXXXX" required />
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-label">Email Address</label>
+                    <input name="Email" type="email" class="form-control" placeholder="name@example.com" required />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-label">Complete Physical Address</label>
+                    <textarea name="Address" class="form-control" placeholder="House #, Street, Area, City..." required></textarea>
+                    <span class="info-hint"><i class="fa-solid fa-circle-info"></i> Include nearby landmarks for easier location tracking</span>
+                </div>
+
+                <button type="submit" class="btn-save-customer">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Customer Records
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="@Url.Action("Dashboard", "Employee")" class="text-secondary text-decoration-none small">
+            <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
+        </a>
+    </div>
+</div>

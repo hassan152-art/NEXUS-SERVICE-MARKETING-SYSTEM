@@ -1,0 +1,181 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Customer Management";
+}
+@model IEnumerable<Customer>
+
+<style>
+    /* Table specific advanced styling matching User List */
+    .custom-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        padding: 20px 25px;
+        background: #fff;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Modern Table Header */
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        padding: 15px 20px;
+        border-bottom: 2px solid #f1f1f1;
+    }
+
+    .table tbody td {
+        padding: 15px 20px;
+        vertical-align: middle;
+        color: #333;
+        font-size: 0.9rem;
+    }
+
+    /* Avatar styling in table */
+    .customer-avatar-sm {
+        width: 35px;
+        height: 35px;
+        background: #fff5f5;
+        color: #d32f2f;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+        border: 1px solid #ffcdd2;
+    }
+
+    /* Action Buttons */
+    .btn-place-order-sm {
+        background-color: #1a237e;
+        color: white;
+        border-radius: 6px;
+        padding: 6px 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .btn-place-order-sm:hover {
+            background-color: #d32f2f;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+    .info-hint-small {
+        color: #9ca3af;
+        font-size: 0.75rem;
+        display: block;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0" style="color: #1a237e;">Customer Directory</h3>
+            <p class="text-muted small">Manage walk-in customers and create orders</p>
+        </div>
+        <a class="btn btn-red" asp-action="CreateCustomer" style="background-color: #d32f2f; color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; text-decoration: none;">
+            <i class="fa-solid fa-plus me-2"></i> Add Walk-in Customer
+        </a>
+    </div>
+
+    <div class="custom-card">
+        <div class="card-header-custom">
+            <h5 class="mb-0 text-secondary">All Registered Customers</h5>
+            <div class="input-group" style="width: 300px;">
+                <span class="input-group-text bg-light border-0"><i class="fa fa-search text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Search by name or CNIC..." />
+            </div>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Customer Name</th>
+                            <th>Contact Details</th>
+                            <th>Identity & Address</th>
+                            <th>Registered On</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var c in Model)
+                        {
+                            <tr>
+                                <td class="text-center text-muted">@i</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="customer-avatar-sm">
+                                            @c.FullName?.Substring(0, 1).ToUpper()
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-bold text-dark">@c.FullName</span>
+                                            <span class="info-hint-small">By: @c.RegisteredBy</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span><i class="fa-solid fa-envelope me-1 text-muted small"></i> @c.Email</span>
+                                        <span><i class="fa-solid fa-phone me-1 text-muted small"></i> @c.ContactNo</span>
+                                    </div>
+                                </td>
+                                <td style="max-width: 250px;">
+                                    <div class="d-flex flex-column">
+                                        <span class="text-dark fw-500"><i class="fa-solid fa-id-card me-1 text-muted"></i> @c.CNIC</span>
+                                        <span class="info-hint-small text-truncate" title="@c.Address">
+                                            <i class="fa-solid fa-location-dot me-1"></i> @c.Address
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border px-2 py-1">
+                                        @c.CreatedDate.ToString("dd MMM yyyy")
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <a asp-action="PlaceOrder" asp-route-customerId="@c.CustomerId" class="btn-place-order-sm">
+                                        <i class="fa-solid fa-cart-plus"></i> Place Order
+                                    </a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="fa-solid fa-users-slash display-4 text-muted mb-3"></i>
+                <p class="text-muted">No customers found in the system.</p>
+                <a asp-action="CreateCustomer" class="btn btn-outline-danger btn-sm">Add First Customer</a>
+            </div>
+        }
+    </div>
+</div>

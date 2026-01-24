@@ -1,0 +1,57 @@
+﻿@model Connection
+
+<div style="min-height: 80vh; padding: 50px 15px; background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, sans-serif;">
+    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e0e0e0;">
+
+        <div style="background: #1a237e; padding: 25px; text-align: center; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #d32f2f;"></div>
+            <h2 style="color: white; margin: 0; font-size: 22px; text-transform: uppercase; letter-spacing: 1px;">
+                🌐 Connection Status
+            </h2>
+        </div>
+
+        <div style="padding: 40px 30px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+            <div style="width: 80px; height: 80px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid #1a237e;">
+                <span style="font-size: 35px;">📶</span>
+            </div>
+
+            @{
+                var statusColor = "#666";
+                var statusBg = "#eee";
+                if (Model.Status.ToLower() == "active") { statusColor = "#1e7e34"; statusBg = "#e6f4ea"; }
+                else if (Model.Status.ToLower() == "pending") { statusColor = "#b76e00"; statusBg = "#fff4e5"; }
+            }
+
+            <span style="background: @statusBg; color: @statusColor; padding: 8px 25px; border-radius: 50px; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+                ● @Model.Status
+            </span>
+        </div>
+
+        <div style="padding: 30px;">
+            <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f9f9f9;">
+                <span style="color: #999; font-weight: 600; font-size: 13px; text-transform: uppercase;">Account ID</span>
+                <span style="color: #1a237e; font-weight: 700; font-size: 16px;">#@Model.AccountId</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f9f9f9;">
+                <span style="color: #999; font-weight: 600; font-size: 13px; text-transform: uppercase;">Activated On</span>
+                <span style="color: #333; font-weight: 600; font-size: 15px;">
+                    @Model.ActivatedDate.ToString("dd MMM, yyyy")
+                </span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; padding: 15px 0;">
+                <span style="color: #999; font-weight: 600; font-size: 13px; text-transform: uppercase;">Service Node</span>
+                <span style="color: #333; font-weight: 600; font-size: 15px;">Primary Fiber Node</span>
+            </div>
+        </div>
+
+        <div style="padding: 25px 30px; background: #fdfdfd; border-top: 1px solid #eee; text-align: center;">
+            <a href="javascript:history.back()" style="color: #1a237e; text-decoration: none; font-weight: 700; font-size: 14px; margin-right: 20px;">← Back</a>
+            <button onclick="window.print()" style="background: #1a237e; color: white; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;"
+                    onmouseover="this.style.background='#d32f2f'">
+                Download Cert
+            </button>
+        </div>
+    </div>
+</div>

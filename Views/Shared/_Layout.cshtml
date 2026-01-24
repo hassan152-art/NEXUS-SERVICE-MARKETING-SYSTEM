@@ -1,0 +1,402 @@
+﻿@{
+    var userName = Context.Session.GetString("UserName");
+    var isLogged = Context.Session.GetString("IsLogged");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nexus_Service_Marketing</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Nexus_Service_Marketing.styles.css" asp-append-version="true" />
+
+
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/assets/css/slicknav.css">
+    <link rel="stylesheet" href="~/assets/css/flaticon.css">
+    <link rel="stylesheet" href="~/assets/css/progressbar_barfiller.css">
+    <link rel="stylesheet" href="~/assets/css/gijgo.css">
+    <link rel="stylesheet" href="~/assets/css/animate.min.css">
+    <link rel="stylesheet" href="~/assets/css/animated-headline.css">
+    <link rel="stylesheet" href="~/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="~/assets/css/slick.css">
+    <link rel="stylesheet" href="~/assets/css/nice-select.css">
+    <link rel="stylesheet" href="~/assets/css/style.css">
+</head>
+<body>
+    <header>
+        <!-- Header Start -->
+        <div class="header-area header-transparent">
+            <div class="main-header ">
+                <div class="header-bottom header-sticky">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+
+                            <!-- Logo -->
+                            <div class="col-xl-2 col-lg-2">
+                                <div class="logo">
+                                    <h3 style="font-size: 24px; font-weight: bold; color: #1a237e;">
+                                        NEXUS<span style="color: #d32f2f;">.net</span>
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-10 col-lg-10">
+                                <div class="menu-wrapper d-flex align-items-center justify-content-end">
+
+                                    <!-- Main-menu -->
+                                    <div class="main-menu d-none d-lg-block">
+                                        <nav>
+                                            <ul id="navigation">
+
+                                                @if (isLogged == "true")
+                                                {
+                                                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                                    <li><a asp-controller="Home" asp-action="About">About Test</a></li>
+                                                    <li><a asp-controller="Home" asp-action="Package">Package</a></li>
+
+                                                    <li>
+                                                        <a asp-controller="Home" asp-action="Blog">Pages</a>
+                                                        <ul class="submenu">
+                                                            <li><a asp-controller="Home" asp-action="Blog">Blog</a></li>
+                                                            <li><a asp-controller="Home" asp-action="BlogDetails">Blog Details</a></li>
+                                                            <li><a asp-controller="Home" asp-action="Features">Features</a></li>
+                                                            <li><a asp-controller="Home" asp-action="MyOrders">My Orders</a></li>
+                                                            <li><a asp-controller="Home" asp-action="MyBills">My Bills</a></li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                                                    <li>
+                                                        <a href="#" style="font-weight:bold; margin-left:10px;">
+                                                            @userName
+                                                        </a>
+                                                    </li>
+
+                                                    <!-- Buttons -->
+                                                    <li>
+                                                        <a asp-controller="Home" asp-action="Search"
+                                                           class="btn header-btn" style="margin-left:10px;">
+                                                            Tracking Order
+                                                        </a>
+                                                    </li>
+
+                                                  
+
+                                                    <li>
+                                                        <a asp-controller="Home" asp-action="Logout"
+                                                           class="btn header-btn"
+                                                           style="margin-left:10px; background:#d32f2f;">
+                                                            Logout
+                                                        </a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                                    <li><a asp-controller="Home" asp-action="About">About Test</a></li>
+                                                    <li><a asp-controller="Home" asp-action="Package">Package</a></li>
+                                                    <li><a asp-controller="Home" asp-action="Features">Features</a></li>
+                                                    <li><a asp-controller="Home" asp-action="Blog">Blog</a></li>
+
+                                                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+
+                                                    <!-- Buttons -->
+                                                    <li>
+                                                        <a asp-controller="Home" asp-action="Search" class="btn"
+                                                           style="
+         display:inline-flex;
+         align-items:center;
+         justify-content:center;
+         height:44px;
+         padding:0 22px;
+         margin-left:12px;
+         font-size:14px;
+         font-weight:600;
+         border-radius:30px;
+         background:linear-gradient(135deg,#5f7cff,#6a5acd);
+         color:#fff;
+         border:none;
+         text-decoration:none;
+         box-shadow:0 6px 14px rgba(102,126,234,.35);
+         transition:all .3s ease;
+       "
+                                                           onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(102,126,234,.45)'"
+                                                           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 14px rgba(102,126,234,.35)'">
+                                                            Tracking Order
+                                                        </a>
+
+
+                                                    </li>
+
+                                                    <li>
+                                                        <a asp-controller="Home" asp-action="Register" class="btn"
+                                                           style="
+         display:inline-flex;
+         align-items:center;
+         justify-content:center;
+         height:44px;
+         padding:0 22px;
+         margin-left:12px;
+         font-size:14px;
+         font-weight:600;
+         border-radius:30px;
+         background:#1a237e;
+         color:#fff;
+         border:none;
+         text-decoration:none;
+         box-shadow:0 6px 14px rgba(26,35,126,.35); 
+         transition:all .3s ease;
+       "
+                                                           onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(26,35,126,.45)'"
+                                                           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 14px rgba(26,35,126,.35)'">
+                                                            Register
+                                                        </a>
+
+                                                    </li>
+
+                                                    <li>
+                                                        <a asp-controller="Home" asp-action="Login" class="btn"
+                                                           style="
+         display:inline-flex;
+         align-items:center;
+         justify-content:center;
+         height:44px;
+         padding:0 22px;
+         margin-left:12px;
+         font-size:14px;
+         font-weight:600;
+         border-radius:30px;
+         background:#d32f2f;
+         color:#fff;
+         border:none;
+         text-decoration:none;
+         box-shadow:0 6px 14px rgba(211,47,47,.35);
+         transition:all .3s ease;
+       "
+                                                           onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(211,47,47,.45)'"
+                                                           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 14px rgba(211,47,47,.35)'">
+                                                            Login
+                                                        </a>
+
+                                                    </li>
+                                                }
+
+                                            </ul>
+                                        </nav>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Mobile Menu -->
+                            <div class="col-12">
+                                <div class="mobile_menu d-block d-lg-none"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+    </header>
+
+
+
+    <div class="container-fluid p-0 m-0">
+        <main role="main" class="pb-3">
+            @RenderBody()
+           
+        </main>
+    </div>
+
+    <footer>
+        <!--? Footer Start  -->
+        <div class="footer-area section-bg" data-background="~/assets/img/gallery/footer_bg.png">
+            <div class="container">
+                <!-- Brand Area Start -->
+                <div class="brand-area pt-25 pb-30">
+                    <div class="container">
+                        <div class="brand-active brand-border pt-50 pb-40">
+                            <div class="single-brand">
+                                <img src="~/assets/img/gallery/brand1.png" alt="">
+                            </div>
+                            <div class="single-brand">
+                                <img src="~/assets/img/gallery/brand2.png" alt="">
+                            </div>
+                            <div class="single-brand">
+                                <img src="~/assets/img/gallery/brand3.png" alt="">
+                            </div>
+                            <div class="single-brand">
+                                <img src="~/assets/img/gallery/brand4.png" alt="">
+                            </div>
+                            <div class="single-brand">
+                                <img src="~/assets/img/gallery/brand2.png" alt="">
+                            </div>
+                            <div class="single-brand">
+                                <img src="~/assets/img/gallery/brand3.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Brand Area End -->
+                <div class="footer-top footer-padding">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-8">
+                            <div class="single-footer-caption mb-50">
+                                <!-- logo -->
+                                <div class="footer-logo">
+                                    <div class="logo">
+                                        <h3 style="font-size: 24px; font-weight: bold; color: #1a237e;">NEXUS<span style="color: #d32f2f;">.net</span></h3>
+
+                                    </div>
+
+                                </div>
+                                <div class="footer-tittle">
+                                    <div class="footer-pera">
+                                        <p class="info1">Receive updates and latest news direct from Simply enter.</p>
+                                    </div>
+                                </div>
+                                <div class="footer-number">
+                                    <h4><span>+564 </span>7885 3222</h4>
+                                    <p>youremail@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-5">
+                            <div class="single-footer-caption mb-50">
+                                <div class="footer-tittle">
+                                    <h4>Our Support</h4>
+                                    <ul>
+                                        <li><a href="#">Advanced</a></li>
+                                        <li><a href="#"> Management</a></li>
+                                        <li><a href="#">Corporate</a></li>
+                                        <li><a href="#">Customer</a></li>
+                                        <li><a href="#">Information</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-5">
+                            <div class="single-footer-caption mb-50">
+                                <div class="footer-tittle">
+                                    <h4>Quick Link</h4>
+                                    <ul>
+                                        <li><a href="#">New Law</a></li>
+                                        <li><a href="#">About</a></li>
+                                        <li><a href="#">Privacy Policy</a></li>
+                                        <li><a href="#">Licenses</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-8">
+                            <div class="single-footer-caption mb-50">
+                                <div class="footer-tittle">
+                                    <h4>Newslatter</h4>
+                                    <div class="footer-pera">
+                                        <p class="info1">Subscribe now to get daily updates</p>
+                                    </div>
+                                </div>
+                                <!-- Form -->
+                                <div class="footer-form">
+                                    <div id="mc_embed_signup">
+                                        <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative mail_part" novalidate="true">
+                                            <input type="email" name="EMAIL" id="newsletter-form-email" placeholder=" Email Address " class="placeholder hide-on-focus" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your email address'">
+                                            <div class="form-icon">
+                                                <button type="submit" name="submit" id="newsletter-submit" class="email_icon newsletter-submit button-contactForm">
+                                                    Send
+                                                </button>
+                                            </div>
+                                            <div class="mt-10 info"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-xl-9 col-lg-8">
+                            <div class="footer-copy-right">
+                                <p>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4">
+                            <!-- Footer Social -->
+                            <div class="footer-social f-right">
+                                <a href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+                                <a href="https://www.facebook.com/sai4ull"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fas fa-globe"></i></a>
+                                <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End-->
+    </footer>
+
+    <script src="~/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="~/assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="~/assets/js/owl.carousel.min.js"></script>
+    <script src="~/assets/js/slick.min.js"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="~/assets/js/wow.min.js"></script>
+    <script src="~/assets/js/animated.headline.js"></script>
+    <script src="~/assets/js/jquery.magnific-popup.js"></script>
+
+    <!-- Date Picker -->
+    <script src="~/assets/js/gijgo.min.js"></script>
+    <!-- Nice-select, sticky -->
+    <script src="~/assets/js/jquery.nice-select.min.js"></script>
+    <script src="~/assets/js/jquery.sticky.js"></script>
+    <!-- Progress -->
+    <script src="~/assets/js/jquery.barfiller.js"></script>
+
+    <!-- counter , waypoint,Hover Direction -->
+    <script src="~/assets/js/jquery.counterup.min.js"></script>
+    <script src="~/assets/js/waypoints.min.js"></script>
+    <script src="~/assets/js/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/hover-direction-snake.min.js"></script>
+
+    <!-- contact js -->
+    <script src="~/assets/js/contact.js"></script>
+    <script src="~/assets/js/jquery.form.js"></script>
+    <script src="~/assets/js/jquery.validate.min.js"></script>
+    <script src="~/assets/js/mail-script.js"></script>
+    <script src="~/assets/js/jquery.ajaxchimp.min.js"></script>
+
+    <!-- Jquery Plugins, main Jquery -->
+    <script src="~/assets/js/plugins.js"></script>
+    <script src="~/assets/js/main.js"></script>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

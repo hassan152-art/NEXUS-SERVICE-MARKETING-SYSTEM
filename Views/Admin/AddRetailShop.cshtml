@@ -1,0 +1,226 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    ViewData["Title"] = "Register Retail Shop";
+}
+
+<style>
+    /* Container for the form card */
+    .form-card-container {
+        max-width: 800px;
+        margin: 30px auto;
+    }
+
+    .custom-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    /* Card Header */
+    .form-header {
+        background: #ffffff;
+        padding: 25px 35px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .form-header i {
+            font-size: 1.5rem;
+            color: #d32f2f; /* Nexus Red */
+        }
+
+        .form-header h4 {
+            color: #1a237e; /* Navy Blue */
+            font-weight: 700;
+            margin: 0;
+        }
+
+    /* Form Body */
+    .form-body {
+        padding: 35px;
+    }
+
+    .form-label {
+        color: #5f6368;
+        font-weight: 600;
+        font-size: 0.88rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        background-color: #fcfcfc;
+        transition: all 0.2s ease;
+    }
+
+        .form-control:focus {
+            border-color: #d32f2f;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 100px;
+        resize: none;
+    }
+
+    /* Layout Grid */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-bottom: 20px;
+    }
+
+    /* Helper Info Box */
+    .helper-alert {
+        background: #fff8e1;
+        border-left: 4px solid #ffc107;
+        color: #856404;
+        padding: 12px 15px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Button Group */
+    .button-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn-save-shop {
+        flex: 2;
+        background: #d32f2f;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .btn-save-shop:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
+        }
+
+    .btn-cancel {
+        flex: 1;
+        background: #f8f9fa;
+        color: #5f6368;
+        border: 1px solid #ddd;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-cancel:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+    .input-group-text {
+        background-color: #ffffff;
+        border-right: none;
+        color: #d32f2f;
+    }
+
+    .form-control.with-icon {
+        border-left: none;
+    }
+
+    @@media (max-width: 768px) {
+        .form-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    }
+</style>
+
+<div class="form-card-container">
+    <div class="custom-form-card">
+        <div class="form-header">
+            <i class="fa-solid fa-store"></i>
+            <div>
+                <h4>Register Retail Shop</h4>
+                <p class="text-muted small mb-0">Fill in the details to add a new service location</p>
+            </div>
+        </div>
+
+        <div class="form-body">
+            <form method="post">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Shop Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-tag"></i></span>
+                            <input name="ShopName" class="form-control with-icon" placeholder="e.g. Nexus North Center" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-city"></i></span>
+                            <input name="City" class="form-control with-icon" placeholder="e.g. Karachi" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Contact Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                            <input name="ContactNo" type="tel" class="form-control with-icon" placeholder="03xx-xxxxxxx" required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Complete Street Address</label>
+                    <textarea name="Address" class="form-control" placeholder="Plot No, Street, Area, Landmark..." required></textarea>
+                    <div class="helper-alert">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>Including a nearby landmark helps customers find the shop easily.</span>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="btn-save-shop">
+                        <i class="fa-solid fa-check-circle"></i> Save Shop Location
+                    </button>
+                    <a href="/Admin/RetailShops" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

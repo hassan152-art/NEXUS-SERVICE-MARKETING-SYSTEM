@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Employee Panel - Nexus Service Marketing System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --primary-red: #d32f2f;
+            --navy-blue: #1a237e;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR STYLES */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            z-index: 1000;
+            transition: width var(--transition-speed) ease;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f1f1f1;
+            white-space: nowrap;
+        }
+
+        .logo-text-fast { color: var(--navy-blue); font-weight: 800; font-size: 1.5rem; }
+        .logo-text-net { color: var(--primary-red); font-weight: 800; font-size: 1.5rem; }
+
+        .sidebar-menu {
+            padding: 15px 0;
+        }
+
+        .sidebar a {
+            color: #5f6368;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .sidebar a i {
+            font-size: 1.2rem;
+            min-width: 30px;
+            margin-right: 15px;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background: #fdfdfd;
+            color: var(--primary-red);
+        }
+
+        .sidebar a.active {
+            background: #fff5f5;
+            color: var(--primary-red);
+            border-left: 4px solid var(--primary-red);
+        }
+
+        /* COLLAPSED STATE */
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar.collapsed .sidebar-header span,
+        .sidebar.collapsed .sidebar-menu span {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-menu a {
+            padding: 15px 0;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .sidebar-menu i {
+            margin-right: 0;
+        }
+
+        /* TOPBAR STYLES */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: 70px;
+            background: #ffffff;
+            padding: 0 30px;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: left var(--transition-speed) ease;
+        }
+
+        .sidebar.collapsed ~ .topbar {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        #sidebarToggle {
+            background: rgba(211, 47, 47, 0.05);
+            border: 1px solid rgba(211, 47, 47, 0.1);
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            color: var(--primary-red);
+            cursor: pointer;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .logout-btn {
+            color: var(--primary-red);
+            text-decoration: none;
+            padding: 6px 15px;
+            border: 1px solid #ffcdd2;
+            border-radius: 4px;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: 70px;
+            padding: 35px;
+            transition: margin-left var(--transition-speed) ease;
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 998;
+            display: none;
+        }
+
+        @@media (max-width: 768px) {
+            .sidebar { width: 0; }
+            .sidebar.active { width: var(--sidebar-width); }
+            .topbar, .main-content { left: 0 !important; margin-left: 0 !important; }
+            .sidebar-overlay.active { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-text-fast">NEXUS</span><span class="logo-text-net">.net</span>
+        </div>
+        <div class="sidebar-menu">
+            <a asp-controller="Employee" asp-action="Dashboard">
+                <i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span>
+            </a>
+            <a asp-controller="Employee" asp-action="CreateCustomer">
+                <i class="fa-solid fa-user-plus"></i> <span>Add Walk-in Customer</span>
+            </a>
+            <a asp-controller="Employee" asp-action="CustomerList">
+                <i class="fa-solid fa-address-book"></i> <span>Customer List</span>
+            </a>
+            <a asp-controller="Employee" asp-action="PlaceOrder">
+                <i class="fa-solid fa-cart-shopping"></i> <span>Place Orders</span>
+            </a>
+            <a asp-controller="Employee" asp-action="OrderList">
+                <i class="fa-solid fa-list-check"></i> <span>Orders List</span>
+            </a>
+            <a asp-controller="Employee" asp-action="BillView">
+                <i class="fa-solid fa-file-invoice-dollar"></i> <span>Bill List</span>
+            </a>
+            <a asp-controller="Employee" asp-action="AllPayments">
+                <i class="fa-solid fa-credit-card"></i> <span>All Payment History</span>
+            </a>
+            <a asp-controller="Employee" asp-action="IssueEnquipment">
+                <i class="fa-solid fa-screwdriver-wrench"></i> <span>Issue Equipment</span>
+            </a>
+        </div>
+    </div>
+
+    <header class="topbar" id="topbar">
+        <div class="d-flex align-items-center">
+            <button id="sidebarToggle"><i class="fa-solid fa-bars-staggered"></i></button>
+            <h5 class="m-0">Nexus Employee Panel</h5>
+        </div>
+        <div class="topbar-user">
+            <span>Welcome, <strong>@Context.Session.GetString("UserName")</strong></span>
+            <a asp-controller="Home" asp-action="Logout" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="main-content" id="mainContent">
+        @RenderBody()
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        // Check persistent state for Desktop
+        if (window.innerWidth > 768 && localStorage.getItem('sidebar-collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                // Mobile Behavior: Slide in/out
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            } else {
+                // Desktop Behavior: Mini/Full
+                sidebar.classList.toggle('collapsed');
+                localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed'));
+            }
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

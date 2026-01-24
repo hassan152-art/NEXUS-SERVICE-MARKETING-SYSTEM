@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Nexus_Service_Marketing.Models.Bill>
+
+<div style="padding: 130px 20px; background-color: #f8f9fa; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <div style="max-width: 1100px; margin: 0 auto 30px auto; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid #1a237e; padding-bottom: 15px;">
+        <div>
+            <h2 style="color: #1a237e; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -1px;">Billing <span style="color: #d32f2f;">History</span></h2>
+            <p style="color: #777; margin: 5px 0 0 0; font-size: 15px;">Manage your invoices and payment records</p>
+        </div>
+        <div style="text-align: right;">
+            <span style="background: #eef0f2; padding: 8px 15px; border-radius: 6px; font-size: 13px; font-weight: 600; color: #555;">
+                Total Invoices: @Model.Count()
+            </span>
+        </div>
+    </div>
+
+    <div style="max-width: 1100px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e0e0e0;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+            <thead>
+                <tr style="background: #1a237e; color: white; text-align: left;">
+                    <th style="padding: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Invoice ID</th>
+                    <th style="padding: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Customer Details</th>
+                    <th style="padding: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Amount</th>
+                    <th style="padding: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Billing Date</th>
+                    <th style="padding: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Payment Status</th>
+                    <th style="padding: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; text-align: center;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" style="padding: 60px; text-align: center; color: #999;">
+                            <div style="font-size: 40px; margin-bottom: 10px;">📄</div>
+                            <p>No billing records found for your account.</p>
+                        </td>
+                    </tr>
+                }
+                @foreach (var b in Model)
+                {
+                    <tr style="border-bottom: 1px solid #f2f2f2; transition: all 0.2s;" onmouseover="this.style.background='#f9faff'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 20px; font-weight: 700; color: #333;">
+                            <span style="color: #d32f2f;">#</span>@b.BillId
+                        </td>
+                        <td style="padding: 20px;">
+                            <div style="font-weight: 600; color: #1a237e;">@b.Order.Customer.FullName</div>
+                            <div style="font-size: 11px; color: #999; text-transform: uppercase;">ID: @b.Order.OrderCode</div>
+                        </td>
+                        <td style="padding: 20px; font-weight: 800; color: #333; font-size: 16px;">
+                            Rs. @b.Amount.ToString("N2")
+                        </td>
+                        <td style="padding: 20px; color: #666; font-size: 14px;">
+                            @b.BillDate.ToString("MMM dd, yyyy")
+                        </td>
+                        <td style="padding: 20px;">
+                            @if (b.IsPaid)
+                            {
+                                <span style="background: #e6f4ea; color: #1e7e34; padding: 6px 15px; border-radius: 50px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center;">
+                                    <span style="width: 6px; height: 6px; background: #1e7e34; border-radius: 50%; margin-right: 8px;"></span> PAID
+                                </span>
+                            }
+                            else
+                            {
+                                <span style="background: #fce8e8; color: #d93025; padding: 6px 15px; border-radius: 50px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center;">
+                                    <span style="width: 6px; height: 6px; background: #d93025; border-radius: 50%; margin-right: 8px;"></span> UNPAID
+                                </span>
+                            }
+                        </td>
+                        <td style="padding: 20px; text-align: center;">
+                            <a asp-action="BillDetails" asp-route-id="@b.BillId"
+                               style="display: inline-block; padding: 8px 18px; background: #1a237e; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600; transition: 0.3s; border: 1px solid #1a237e;"
+                               onmouseover="this.style.background='transparent'; this.style.color='#1a237e'"
+                               onmouseout="this.style.background='#1a237e'; this.style.color='white'">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div style="max-width: 1100px; margin: 25px auto; text-align: right;">
+        <button onclick="window.print()" style="background: none; border: 1px solid #ccc; padding: 8px 20px; border-radius: 6px; cursor: pointer; color: #666; font-weight: 600; font-size: 13px;">
+            Print Statement
+        </button>
+    </div>
+</div>

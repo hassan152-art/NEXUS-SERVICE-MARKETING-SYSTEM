@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Technical Panel - NEXUS ISP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <style>
+        :root {
+            --tech-sidebar-full: 260px;
+            --tech-sidebar-mini: 80px;
+            --tech-navy: #1a237e;
+            --tech-red: #d32f2f;
+            --tech-bg: #f4f7f6;
+            --tech-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background-color: var(--tech-bg);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR STRUCTURE --- */
+        .tech-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--tech-sidebar-full);
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            z-index: 1050;
+            transition: var(--tech-transition);
+            overflow: hidden;
+        }
+
+        .tech-sidebar-header {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .tech-logo-full {
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin: 0;
+            color: var(--tech-navy);
+            white-space: nowrap;
+        }
+
+            .tech-logo-full span {
+                color: var(--tech-red);
+            }
+
+        .tech-logo-icon {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--tech-navy);
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* --- MENU & LEFT HIGHLIGHT (The Key Part) --- */
+        .tech-menu {
+            padding: 15px 0;
+        }
+
+        .tech-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--tech-transition);
+            border-left: 5px solid transparent; /* Placeholder for highlight */
+            margin-bottom: 5px;
+            white-space: nowrap;
+        }
+
+            .tech-link i {
+                min-width: 35px;
+                font-size: 1.1rem;
+                text-align: center;
+            }
+
+            .tech-link:hover {
+                background: #f9fafb;
+                color: var(--tech-navy);
+            }
+
+            /* Active Highlight - Hamesha Left side par patti dikhayega */
+            .tech-link.active {
+                background: #eff6ff !important;
+                color: var(--tech-navy) !important;
+                border-left: 5px solid var(--tech-navy) !important; /* Blue Highlight Bar */
+                font-weight: 600;
+            }
+
+        /* --- COLLAPSED (CLOSED) STATE --- */
+        .tech-sidebar.collapsed {
+            width: var(--tech-sidebar-mini);
+        }
+
+            .tech-sidebar.collapsed .tech-logo-full,
+            .tech-sidebar.collapsed .tech-link span {
+                display: none;
+            }
+
+            .tech-sidebar.collapsed .tech-logo-icon {
+                display: block;
+            }
+
+            .tech-sidebar.collapsed .tech-link {
+                justify-content: center;
+                padding: 15px 0;
+                /* Yahan bhi border-left active state mein dikhega */
+            }
+
+                .tech-sidebar.collapsed .tech-link.active {
+                    border-left: 5px solid var(--tech-navy) !important;
+                }
+
+        /* --- TOPBAR & MAIN CONTENT --- */
+        .tech-topbar {
+            position: fixed;
+            top: 0;
+            left: var(--tech-sidebar-full);
+            right: 0;
+            height: 70px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 1000;
+            transition: var(--tech-transition);
+        }
+
+        .tech-sidebar.collapsed ~ .tech-topbar {
+            left: var(--tech-sidebar-mini);
+        }
+
+        .tech-main {
+            margin-left: var(--tech-sidebar-full);
+            margin-top: 70px;
+            padding: 30px;
+            transition: var(--tech-transition);
+        }
+
+        .tech-sidebar.collapsed ~ .tech-main {
+            margin-left: var(--tech-sidebar-mini);
+        }
+
+        #techToggle {
+            background: #f3f4f6;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--tech-navy);
+            transition: 0.2s;
+        }
+
+            #techToggle:hover {
+                background: #e5e7eb;
+            }
+
+        .tech-logout-btn {
+            color: var(--tech-red);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 7px 18px;
+            border: 1px solid #ffcdd2;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+            .tech-logout-btn:hover {
+                background: var(--tech-red);
+                color: #fff;
+            }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="tech-sidebar" id="sidebar">
+        <div class="tech-sidebar-header">
+            <h4 class="tech-logo-full">NEXUS<span>.net</span></h4>
+            <div class="tech-logo-icon"><i class="fa-solid fa-microchip"></i></div>
+        </div>
+
+        <nav class="tech-menu">
+            @if (User.IsInRole("Technical"))
+            {
+                <a asp-controller="Technical" asp-action="Dashboard" class="tech-link">
+                    <i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span>
+                </a>
+                <a asp-controller="Technical" asp-action="Orders" class="tech-link">
+                    <i class="fa-solid fa-clipboard-list"></i> <span>Manage Orders</span>
+                </a>
+                <a asp-controller="Technical" asp-action="Connections" class="tech-link">
+                    <i class="fa-solid fa-tower-broadcast"></i> <span>Connections</span>
+                </a>
+            }
+        </nav>
+    </aside>
+
+    <header class="tech-topbar">
+        <div class="d-flex align-items-center">
+            <button id="techToggle"><i class="fa-solid fa-bars-staggered"></i></button>
+            <h5 class="ms-3 mb-0 fw-bold" style="color: #374151;">Technical Operations</h5>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <span class="me-3 d-none d-sm-inline">Hi, <strong>@Context.Session.GetString("UserName")</strong></span>
+            <a asp-controller="Home" asp-action="Logout" class="tech-logout-btn">
+                <i class="fa-solid fa-power-off me-1"></i> Logout
+            </a>
+        </div>
+    </header>
+
+    <main class="tech-main">
+        @RenderBody()
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('techToggle');
+        const menuLinks = document.querySelectorAll('.tech-link');
+
+        // Sidebar Collapse State with LocalStorage
+        if (localStorage.getItem('tech-sidebar-collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('tech-sidebar-collapsed', sidebar.classList.contains('collapsed'));
+        });
+
+        // Active Link Highlighting (Based on URL)
+        const currentPath = window.location.pathname.toLowerCase();
+        menuLinks.forEach(link => {
+            const href = link.getAttribute('href')?.toLowerCase();
+            // Agar URL link ke href se match kare
+            if (href && currentPath.includes(href)) {
+                link.classList.add('active');
+            }
+
+            // Manual click highlight (Immediate response)
+            link.addEventListener('click', function() {
+                menuLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

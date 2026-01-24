@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Nexus Admin - ISP Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <style>
+        :root {
+            --nexus-sidebar-full: 260px;
+            --nexus-sidebar-mini: 80px;
+            --nexus-red: #d32f2f;
+            --nexus-navy: #1a237e;
+            --nexus-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            margin: 0;
+        }
+
+        /* --- SIDEBAR BASE --- */
+        .nexus-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--nexus-sidebar-full);
+            background: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            z-index: 1050;
+            transition: var(--nexus-transition);
+            overflow: hidden;
+        }
+
+        .nexus-sidebar-header {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .nexus-logo-full {
+            color: var(--nexus-navy);
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+            .nexus-logo-full span {
+                color: var(--nexus-red);
+            }
+
+        .nexus-logo-icon {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--nexus-red);
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* --- MENU & HIGHLIGHTING (Left Bar Style) --- */
+        .nexus-menu {
+            padding: 15px 0;
+        }
+
+        .nexus-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            color: #5f6368;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--nexus-transition);
+            white-space: nowrap;
+            border-left: 5px solid transparent; /* Highlight Bar on Left */
+        }
+
+            .nexus-menu-item i {
+                min-width: 35px;
+                font-size: 1.1rem;
+                text-align: center;
+            }
+
+            .nexus-menu-item:hover {
+                color: var(--nexus-red);
+                background: #fdfdfd;
+            }
+
+            /* Active State - Left Highlight */
+            .nexus-menu-item.active {
+                color: var(--nexus-red);
+                background: #fff5f5;
+                border-left-color: var(--nexus-red); /* Red Bar on Left */
+                font-weight: 600;
+            }
+
+        /* --- COLLAPSED STATE --- */
+        .nexus-sidebar.collapsed {
+            width: var(--nexus-sidebar-mini);
+        }
+
+            .nexus-sidebar.collapsed .nexus-logo-full,
+            .nexus-sidebar.collapsed .nexus-menu-item span {
+                display: none;
+            }
+
+            .nexus-sidebar.collapsed .nexus-logo-icon {
+                display: block;
+            }
+
+            .nexus-sidebar.collapsed .nexus-menu-item {
+                justify-content: center;
+                padding: 15px 0;
+            }
+
+        /* --- TOPBAR & CONTENT --- */
+        .nexus-topbar {
+            position: fixed;
+            top: 0;
+            left: var(--nexus-sidebar-full);
+            right: 0;
+            height: 70px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: var(--nexus-transition);
+            z-index: 1000;
+        }
+
+        .nexus-sidebar.collapsed ~ .nexus-topbar {
+            left: var(--nexus-sidebar-mini);
+        }
+
+        .nexus-main {
+            margin-left: var(--nexus-sidebar-full);
+            padding: 30px;
+            margin-top: 70px;
+            transition: var(--nexus-transition);
+        }
+
+        .nexus-sidebar.collapsed ~ .nexus-main {
+            margin-left: var(--nexus-sidebar-mini);
+        }
+
+        #sidebarToggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #5f6368;
+        }
+
+        /* --- GLOBAL FORM BUTTON FIXES --- */
+        /* Yeh classes ab aapke har form pe kaam karengi */
+        .btn-success, .btn-red, .nexus-btn-primary {
+            background-color: var(--nexus-red) !important;
+            border-color: var(--nexus-red) !important;
+            color: white !important;
+            padding: 10px 24px;
+            font-weight: 600;
+            border-radius: 6px;
+        }
+
+        .btn-secondary, .nexus-btn-secondary {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: white !important;
+            padding: 10px 24px;
+        }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="nexus-sidebar" id="sidebar">
+        <div class="nexus-sidebar-header">
+            <h4 class="nexus-logo-full">NEXUS<span>.net</span></h4>
+            <div class="nexus-logo-icon"><i class="fa-solid fa-earth-americas"></i></div>
+        </div>
+
+        <nav class="nexus-menu">
+            <a asp-controller="Admin" asp-action="Dashboard" class="nexus-menu-item">
+                <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+            </a>
+            <a asp-controller="Admin" asp-action="Users" class="nexus-menu-item">
+                <i class="fa-solid fa-user-gear"></i> <span>Manage Users</span>
+            </a>
+            <a asp-controller="Admin" asp-action="Employees" class="nexus-menu-item">
+                <i class="fa-solid fa-address-card"></i> <span>Employees</span>
+            </a>
+            <a asp-controller="Admin" asp-action="RetailShops" class="nexus-menu-item">
+                <i class="fa-solid fa-store"></i> <span>Retail Shops</span>
+            </a>
+            <a asp-controller="Admin" asp-action="Vendors" class="nexus-menu-item">
+                <i class="fa-solid fa-truck-ramp-box"></i> <span>Vendors</span>
+            </a>
+            <a asp-controller="Admin" asp-action="Plans" class="nexus-menu-item">
+                <i class="fa-solid fa-calendar-check"></i> <span>Plans</span>
+            </a>
+            <a asp-controller="Admin" asp-action="Equipments" class="nexus-menu-item">
+                <i class="fa-solid fa-screwdriver-wrench"></i> <span>Equipments</span>
+            </a>
+            <a asp-controller="Admin" asp-action="Messages" class="nexus-menu-item">
+                <i class=""></i> <span>Messages</span>
+            </a>
+        </nav>
+    </aside>
+
+    <header class="nexus-topbar">
+        <div class="d-flex align-items-center">
+            <button id="sidebarToggle"><i class="fa-solid fa-bars-staggered"></i></button>
+            <h5 class="m-0 text-secondary fw-bold">Nexus Admin Panel</h5>
+        </div>
+        <div class="d-flex align-items-center">
+            <span class="me-3">Welcome, <strong>@Context.Session.GetString("UserName")</strong></span>
+            <a asp-controller="Home" asp-action="Logout" class="btn btn-outline-danger btn-sm px-3">Logout</a>
+        </div>
+    </header>
+
+    <main class="nexus-main">
+        @RenderBody()
+    </main>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const menuItems = document.querySelectorAll('.nexus-menu-item');
+
+        // Toggle Sidebar
+        if (localStorage.getItem('sidebar-collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed'));
+        });
+
+        // Auto Highlight Active Page
+        const currentUrl = window.location.pathname.toLowerCase();
+        menuItems.forEach(item => {
+            const href = item.getAttribute('href')?.toLowerCase();
+            if (href && currentUrl.includes(href)) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

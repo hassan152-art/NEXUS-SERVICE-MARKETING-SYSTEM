@@ -1,0 +1,291 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f4f7f6;
+    }
+
+    /* Modern Card Styling from Image */
+    .nexus-card {
+        background: #ffffff;
+        border-radius: 15px;
+        border: none;
+        padding: 22px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        height: 100%;
+        transition: all 0.3s ease;
+        text-decoration: none !important; /* Link underline khatam karne ke liye */
+    }
+
+        .nexus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Left Side Colored Bar */
+        .nexus-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 15%;
+            height: 70%;
+            width: 5px;
+            border-radius: 0 5px 5px 0;
+        }
+
+    /* Row Color Mapping */
+    .card-customers::before {
+        background-color: #fbc02d;
+    }
+    /* Yellow */
+    .card-employees::before {
+        background-color: #00bcd4;
+    }
+    /* Cyan */
+    .card-orders::before {
+        background-color: #4caf50;
+    }
+    /* Green */
+    .card-plans::before {
+        background-color: #0d6efd;
+    }
+    /* Blue */
+    .card-equipment::before {
+        background-color: #6c757d;
+    }
+    /* Grey */
+    .card-revenue::before {
+        background-color: #e53935;
+    }
+    /* Red */
+
+    /* Soft Icon Backgrounds */
+    .icon-box {
+        width: 55px;
+        height: 55px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 18px;
+    }
+
+    .bg-soft-yellow {
+        background-color: #fffde7;
+        color: #fbc02d;
+    }
+
+    .bg-soft-cyan {
+        background-color: #e0f7fa;
+        color: #00bcd4;
+    }
+
+    .bg-soft-green {
+        background-color: #e8f5e9;
+        color: #4caf50;
+    }
+
+    .bg-soft-blue {
+        background-color: #e7f0ff;
+        color: #0d6efd;
+    }
+
+    .bg-soft-grey {
+        background-color: #f1f3f5;
+        color: #6c757d;
+    }
+
+    .bg-soft-red {
+        background-color: #ffebee;
+        color: #e53935;
+    }
+
+    /* Text Content */
+    .stat-info h2 {
+        font-weight: 800;
+        margin: 0;
+        color: #333;
+        font-size: 1.7rem;
+    }
+
+    .stat-info p {
+        font-size: 0.75rem;
+        color: #888;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin: 0;
+        letter-spacing: 0.5px;
+    }
+
+    /* Action Link Styling */
+    .stat-link {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-top: 8px;
+        display: block;
+    }
+
+    /* Chart Containers */
+    .analytics-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: none;
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <h3 class="fw-bold mb-4" style="color: #2c3e50;">Admin Dashboard</h3>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <a href="/Admin/Customers" class="nexus-card card-customers">
+                <div class="icon-box bg-soft-yellow"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-info">
+                    <h2>@ViewBag.TotalCustomers</h2>
+                    <p>Total Customers</p>
+                    <span class="stat-link text-warning">View All <i class="fa-solid fa-arrow-right small"></i></span>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/Admin/Employees" class="nexus-card card-employees">
+                <div class="icon-box bg-soft-cyan"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="stat-info">
+                    <h2>@ViewBag.TotalEmployees</h2>
+                    <p>Active Employees</p>
+                    <span class="stat-link text-info">Manage Team <i class="fa-solid fa-arrow-right small"></i></span>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/Admin/Orders" class="nexus-card card-orders">
+                <div class="icon-box bg-soft-green"><i class="fa-solid fa-cart-flatbed"></i></div>
+                <div class="stat-info">
+                    <h2>@ViewBag.TotalOrders</h2>
+                    <p>Total Orders</p>
+                    <span class="stat-link text-success">Track Orders <i class="fa-solid fa-arrow-right small"></i></span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <a href="/Admin/Plans" class="nexus-card card-plans">
+                <div class="icon-box bg-soft-blue"><i class="fa-solid fa-wifi"></i></div>
+                <div class="stat-info">
+                    <h2>@ViewBag.TotalPlans</h2>
+                    <p>Internet Plans</p>
+                    <span class="stat-link text-primary">Modify Plans <i class="fa-solid fa-arrow-right small"></i></span>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/Admin/Equipments" class="nexus-card card-equipment">
+                <div class="icon-box bg-soft-grey"><i class="fa-solid fa-microchip"></i></div>
+                <div class="stat-info">
+                    <h2>@ViewBag.TotalEquipment</h2>
+                    <p>Inventory Items</p>
+                    <span class="stat-link text-secondary">Check Stock <i class="fa-solid fa-arrow-right small"></i></span>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <div class="nexus-card card-revenue">
+                <div class="icon-box bg-soft-red"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                <div class="stat-info">
+                    <h2>Rs. @ViewBag.TotalRevenue</h2>
+                    <p>Total Revenue</p>
+                    <span class="stat-link text-danger">Financial Report <i class="fa-solid fa-arrow-up-right-from-square small"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-7">
+            <div class="analytics-card">
+                <div class="chart-header">
+                    <h5 class="fw-bold m-0">📊 Revenue Insights</h5>
+                    <span class="badge bg-light text-dark border">Monthly</span>
+                </div>
+                <canvas id="revenueChart" style="height: 280px;"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="analytics-card">
+                <div class="chart-header">
+                    <h5 class="fw-bold m-0">📈 Performance</h5>
+                    <span class="badge bg-light text-dark border">By Employee</span>
+                </div>
+                <canvas id="employeeChart" style="height: 280px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Revenue Bar Chart
+    var revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(revenueCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.Months)),
+            datasets: [{
+                label: 'Revenue',
+                data: @Html.Raw(Json.Serialize(ViewBag.MonthlyRevenue)),
+                backgroundColor: '#00bcd4',
+                borderRadius: 6,
+                barThickness: 35
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+        }
+    });
+
+    // Employee Performance Line Chart
+    var empCtx = document.getElementById('employeeChart').getContext('2d');
+    new Chart(empCtx, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.EmployeeNames)),
+            datasets: [{
+                label: 'Orders',
+                data: @Html.Raw(Json.Serialize(ViewBag.EmployeeOrders)),
+                borderColor: '#4caf50',
+                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+        }
+    });
+</script>

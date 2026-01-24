@@ -1,0 +1,166 @@
+﻿@{
+    Layout = "~/Views/Shared/_Accounts_Layout.cshtml";
+    ViewData["Title"] = "Financial Analytics";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark m-0">Financial Analytics</h2>
+            <p class="text-muted">Welcome back, Accounts Manager. Here is your summary.</p>
+        </div>
+        <button class="btn btn-success shadow-sm rounded-pill px-4" onclick="window.print()">
+            <i class="fa-solid fa-file-export me-2"></i> Export Report
+        </button>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="acc-stat-card bg-revenue text-white">
+                <div class="card-content">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Total Revenue</h6>
+                    <h2 class="fw-bold">Rs. @ViewBag.TotalRevenue</h2>
+                    <p class="mb-0 x-small text-white-50"><i class="fa-solid fa-arrow-up me-1"></i> Live Tracking</p>
+                </div>
+                <div class="acc-icon-box"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="acc-stat-card bg-pending text-white">
+                <div class="card-content">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Pending Bills</h6>
+                    <h2 class="fw-bold">@ViewBag.PendingBills</h2>
+                    <p class="mb-0 x-small text-white-50">Requires urgent attention</p>
+                </div>
+                <div class="acc-icon-box"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="acc-stat-card bg-users text-white">
+                <div class="card-content">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Active Clients</h6>
+                    <h2 class="fw-bold">@ViewBag.ActiveClients</h2>
+                    <p class="mb-0 x-small text-white-50">Total subscriber base</p>
+                </div>
+                <div class="acc-icon-box"><i class="fa-solid fa-users-gear"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="acc-stat-card bg-expense text-white">
+                <div class="card-content">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Operational Cost</h6>
+                    <h2 class="fw-bold">Rs. @ViewBag.OperationalCost</h2>
+                    <p class="mb-0 x-small text-white-50">Maintenance & Overhead</p>
+                </div>
+                <div class="acc-icon-box"><i class="fa-solid fa-wallet"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-4"><i class="fa-solid fa-chart-line text-success me-2"></i>Revenue Growth</h5>
+                <div style="height: 300px;">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-4"><i class="fa-solid fa-bolt text-warning me-2"></i>Quick Actions</h5>
+                <div class="d-grid gap-3">
+                    <a asp-action="Orders" class="btn btn-outline-dark text-start py-3 rounded-3 border-light-subtle">
+                        <i class="fa-solid fa-file-invoice-dollar me-3 text-primary"></i> Create New Invoice
+                    </a>
+                    <a asp-action="Orders" class="btn btn-outline-dark text-start py-3 rounded-3 border-light-subtle">
+                        <i class="fa-solid fa-user-plus me-3 text-success"></i> Approve Pending Users
+                    </a>
+                    <a asp-action="BillView" class="btn btn-outline-dark text-start py-3 rounded-3 border-light-subtle">
+                        <i class="fa-solid fa-receipt me-3 text-warning"></i> View Expense Logs
+                    </a>
+                    <a asp-action="AllPayments" class="btn btn-outline-dark text-start py-3 rounded-3 border-light-subtle">
+                        <i class="fa-solid fa-magnifying-glass-chart me-3 text-info"></i> Audit Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom Color Palettes */
+    .bg-revenue { background: linear-gradient(135deg, #1d976c 0%, #93f9b9 100%); }
+    .bg-pending { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .bg-users { background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%); }
+    .bg-expense { background: linear-gradient(135deg, #373b44 0%, #4286f4 100%); }
+
+    /* Modern Stat Cards */
+    .acc-stat-card {
+        padding: 25px;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .acc-stat-card:hover { transform: translateY(-8px); }
+
+    .acc-icon-box {
+        font-size: 3rem;
+        opacity: 0.2;
+        position: absolute;
+        right: 15px;
+        bottom: 5px;
+    }
+
+    .x-small { font-size: 0.7rem; }
+
+    /* Buttons Hover */
+    .btn-outline-dark:hover {
+        background-color: #f8f9fa;
+        color: #212529;
+        border-color: #dee2e6;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Live Line Chart for Revenue
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Monthly Revenue (PKR)',
+                    data: [@ViewBag.ChartData], // Live data from controller
+                    borderColor: '#1d976c',
+                    backgroundColor: 'rgba(29, 151, 108, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: '#f0f0f0' }, beginAtZero: true },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+}

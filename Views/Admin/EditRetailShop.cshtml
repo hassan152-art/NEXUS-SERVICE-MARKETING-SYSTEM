@@ -1,0 +1,178 @@
+﻿@model RetailShop
+@{
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    ViewData["Title"] = "Edit Retail Shop";
+}
+
+<style>
+    /* Main Card Container */
+    .form-card-container {
+        max-width: 750px;
+        margin: 30px auto;
+    }
+
+    .custom-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    /* Header Section */
+    .form-header {
+        background: #ffffff;
+        padding: 25px 30px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .form-header h4 {
+            color: #1a237e; /* Navy Blue */
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+            .form-header h4 i {
+                color: #d32f2f; /* Nexus Red */
+            }
+
+    /* Form Body */
+    .form-body {
+        padding: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-label {
+        color: #5f6368;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    /* Input & Textarea Styling */
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        background-color: #fdfdfd;
+        width: 100%;
+    }
+
+        .form-control:focus {
+            border-color: #d32f2f;
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+            background-color: #fff;
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    /* Layout Helpers */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* Action Buttons */
+    .action-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .btn-update-nexus {
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        flex: 2;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+        .btn-update-nexus:hover {
+            background-color: #b71c1c;
+            box-shadow: 0 4px 12px rgba(183, 28, 28, 0.2);
+        }
+
+    .btn-back-nexus {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        border: 1px solid #ced4da;
+        padding: 14px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        flex: 1;
+        text-align: center;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-back-nexus:hover {
+            background-color: #e9ecef;
+            color: #1a237e;
+        }
+</style>
+
+<div class="form-card-container">
+    <div class="custom-form-card">
+        <div class="form-header">
+            <h4><i class="fa-solid fa-store"></i> Edit Retail Shop Details</h4>
+        </div>
+
+        <div class="form-body">
+            <form method="post">
+                <input type="hidden" name="RetailShopId" value="@Model.RetailShopId" />
+
+                <div class="form-group">
+                    <label class="form-label">Official Shop Name</label>
+                    <input name="ShopName" value="@Model.ShopName" class="form-control" placeholder="e.g. Nexus North Center" required />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input name="City" value="@Model.City" class="form-control" placeholder="e.g. Karachi" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact No</label>
+                        <input name="ContactNo" value="@Model.ContactNo" class="form-control" placeholder="e.g. 021-3456789" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Physical Address</label>
+                    <textarea name="Address" class="form-control" placeholder="Enter complete shop address...">@Model.Address</textarea>
+                </div>
+
+                <div class="action-row">
+                    <button type="submit" class="btn-update-nexus">
+                        <i class="fa-solid fa-cloud-check"></i> Update Shop
+                    </button>
+                    <a href="/Admin/RetailShops" class="btn-back-nexus">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,254 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    ViewData["Title"] = "Create Service Plan";
+}
+
+<style>
+    /* Main Container */
+    .form-card-container {
+        max-width: 850px;
+        margin: 30px auto;
+    }
+
+    .custom-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    /* Professional Header */
+    .form-header {
+        background: #ffffff;
+        padding: 25px 35px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .form-header i {
+            font-size: 1.5rem;
+            color: #d32f2f; /* Nexus Red */
+        }
+
+        .form-header h4 {
+            color: #1a237e; /* Navy Blue */
+            font-weight: 700;
+            margin: 0;
+        }
+
+    /* Form Body & Grid */
+    .form-body {
+        padding: 35px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* Section Styling */
+    .section-header {
+        grid-column: span 2;
+        color: #d32f2f;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f8f9fa;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+    /* Inputs */
+    .form-label {
+        color: #5f6368;
+        font-weight: 600;
+        font-size: 0.88rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        background-color: #fcfcfc;
+        transition: all 0.2s ease;
+    }
+
+        .form-control:focus {
+            border-color: #d32f2f;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+            outline: none;
+        }
+
+    /* Input Groups */
+    .input-group-text {
+        background-color: #ffffff;
+        border-right: none;
+        color: #d32f2f;
+    }
+
+    .form-control.with-icon {
+        border-left: none;
+    }
+
+    /* Buttons */
+    .button-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 35px;
+        padding-top: 25px;
+        border-top: 1px solid #f1f1f1;
+    }
+
+    .btn-save-plan {
+        flex: 2;
+        background: #d32f2f;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: 0.3s;
+    }
+
+        .btn-save-plan:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.2);
+        }
+
+    .btn-cancel {
+        flex: 1;
+        background: #f8f9fa;
+        color: #5f6368;
+        border: 1px solid #ddd;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    @@media (max-width: 768px) {
+        .form-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        grid-column: span 1;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    }
+</style>
+
+<div class="form-card-container">
+    <div class="custom-form-card">
+        <div class="form-header">
+            <i class="fa-solid fa-layer-group"></i>
+            <div>
+                <h4>Configure Service Plan</h4>
+                <p class="text-muted small mb-0">Set up connection types, bandwidth, and billing details</p>
+            </div>
+        </div>
+
+        <div class="form-body">
+            <form method="post">
+                <div class="form-grid">
+
+                    <div class="section-header">
+                        <i class="fa-solid fa-network-wired"></i> Infrastructure Details
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Connection Type</label>
+                        <select name="ConnectionType" class="form-control" required>
+                            <option value="">-- Select Type --</option>
+                            <option value="Dialup">☎️ Dialup</option>
+                            <option value="Broadband">📡 Broadband</option>
+                            <option value="Telephone">📞 Telephone</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Required Equipment</label>
+                        <select name="EquipmentId" class="form-control" required>
+                            <option value="">-- Assign Hardware --</option>
+                            @foreach (var e in ViewBag.Equipments)
+                            {
+                                <option value="@e.EquipmentId">@e.EquipmentName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="section-header">
+                        <i class="fa-solid fa-receipt"></i> Plan Information
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Plan Display Name</label>
+                        <input name="PlanName" class="form-control" placeholder="e.g. Ultra Fiber Monthly Pack" required />
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Speed / Type Description</label>
+                        <input name="SpeedOrType" class="form-control" placeholder="e.g. 100 Mbps Unlimited Data" required />
+                    </div>
+
+                    <div class="section-header">
+                        <i class="fa-solid fa-money-bill-transfer"></i> Billing & Validity
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Monthly Charges (PKR)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₨</span>
+                            <input name="Charges" type="number" step="0.01" class="form-control with-icon" placeholder="2500" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Validity Period (Months)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-regular fa-calendar-check"></i></span>
+                            <input name="ValidityMonths" type="number" class="form-control with-icon" placeholder="12" required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="btn-save-plan">
+                        <i class="fa-solid fa-circle-check"></i> Save Service Plan
+                    </button>
+                    <a href="/Admin/Plans" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

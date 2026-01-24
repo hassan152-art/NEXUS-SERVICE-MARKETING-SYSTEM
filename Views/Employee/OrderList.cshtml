@@ -1,0 +1,204 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Order Management";
+}
+@model IEnumerable<Order>
+
+<style>
+    /* Card & Table Styling */
+    .custom-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        padding: 20px 25px;
+        background: #fff;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 15px 20px;
+        border-bottom: 2px solid #f1f1f1;
+    }
+
+    .table tbody td {
+        padding: 16px 20px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+
+    /* Order Code Styling */
+    .order-code-text {
+        font-family: 'Monaco', 'Consolas', monospace;
+        color: #1a237e;
+        font-weight: 700;
+        background: #f0f2f5;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    /* Advanced Status Badges */
+    .status-pill {
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .status-completed {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+
+    .status-pending {
+        background: #fff8e1;
+        color: #f57f17;
+        border: 1px solid #ffecb3;
+    }
+
+    .status-cancelled {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+    }
+
+    /* Action Buttons */
+    .btn-view-details {
+        background-color: #f1f3f4;
+        color: #3c4043;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+        border: 1px solid #dadce0;
+    }
+
+        .btn-view-details:hover {
+            background-color: #e8eaed;
+            color: #1a237e;
+        }
+
+    .customer-link {
+        color: #1a237e;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .customer-link:hover {
+            color: #d32f2f;
+        }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0" style="color: #1a237e;">Order Management</h3>
+            <p class="text-muted small">Track and manage all customer internet connections</p>
+        </div>
+        <a class="btn" asp-action="PlaceOrder" style="background-color: #d32f2f; color: white; padding: 10px 22px; border-radius: 8px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 10px rgba(211,47,47,0.2);">
+            <i class="fa-solid fa-cart-plus me-2"></i> Place New Order
+        </a>
+    </div>
+
+    <div class="custom-card">
+        <div class="card-header-custom">
+            <h5 class="mb-0 text-secondary"><i class="fa-solid fa-list-check me-2"></i> Recent Orders</h5>
+            <div class="input-group" style="width: 280px;">
+                <span class="input-group-text bg-light border-0"><i class="fa fa-search text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Search Order ID..." />
+            </div>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Order Code</th>
+                            <th>Customer Name</th>
+                            <th>Connection & Plan</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var o in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="order-code-text">@o.OrderCode</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <a href="#" class="customer-link">@o.Customer.FullName</a>
+                                        <span class="text-muted small">@o.Customer.ContactNo</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold text-dark">@o.ConnectionType</span>
+                                        <span class="text-muted small">Plan: @o.Plan.PlanName</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-dark">@o.OrderDate.ToString("dd MMM yyyy")</span>
+                                    <br />
+                                    <small class="text-muted">@o.OrderDate.ToString("hh:mm tt")</small>
+                                </td>
+                                <td>
+                                    @if (o.Status == "Completed")
+                                    {
+                                        <span class="status-pill status-completed">Completed</span>
+                                    }
+                                    else if (o.Status == "Cancelled")
+                                    {
+                                        <span class="status-pill status-cancelled">Cancelled</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-pill status-pending">Pending</span>
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <a asp-action="Details" asp-route-id="@o.OrderId" class="btn-view-details">
+                                        <i class="fa-solid fa-eye me-1"></i> View Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <div class="mb-3">
+                    <i class="fa-solid fa-box-open display-1 text-light"></i>
+                </div>
+                <h5 class="text-muted">No orders found</h5>
+                <p class="text-secondary small">Start by adding a customer and placing their first order.</p>
+                <a asp-action="PlaceOrder" class="btn btn-outline-danger btn-sm mt-2">Place First Order</a>
+            </div>
+        }
+    </div>
+</div>

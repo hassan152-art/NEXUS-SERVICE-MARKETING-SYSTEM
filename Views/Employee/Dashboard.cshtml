@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Employee Dashboard";
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+}
+
+<h2 class="fw-bold mb-4"> Employee Dashboard</h2>
+
+<!-- 🔹 SUMMARY CARDS -->
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h6>Today's Orders</h6>
+                <h3>@ViewBag.TodayOrders</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h6>Total Orders</h6>
+                <h3>@ViewBag.TotalOrders</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h6>Pending Orders</h6>
+                <h3>@ViewBag.PendingOrders</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow text-center bg-success text-white">
+            <div class="card-body">
+                <h6>Payments Collected</h6>
+                <h3>Rs. @ViewBag.TotalPayments</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 📈 CHART -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header fw-bold">📈 Monthly Orders</div>
+            <div class="card-body">
+                <canvas id="orderChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var ctx = document.getElementById('orderChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.Months)),
+            datasets: [{
+                label: 'Orders',
+                data: @Html.Raw(Json.Serialize(ViewBag.MonthlyOrders))
+            }]
+        }
+    });
+</script>

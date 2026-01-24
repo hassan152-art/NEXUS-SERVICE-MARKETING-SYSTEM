@@ -1,0 +1,254 @@
+﻿@model Bill
+@{
+    Layout = null; // Print view ke liye layout disable rakha gaya hai
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus_Invoice_#@Model.BillId</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .invoice-wrapper {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px;
+            position: relative;
+        }
+
+        /* Status Watermark */
+        .status-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 100px;
+            font-weight: 900;
+            opacity: 0.1;
+            z-index: -1;
+            text-transform: uppercase;
+        }
+
+        .header-top {
+            border-bottom: 3px solid #1d976c;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .company-logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1d976c;
+            letter-spacing: -1px;
+        }
+
+            .company-logo span {
+                color: #0f172a;
+            }
+
+        .info-label {
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .table-main thead th {
+            background-color: #f8fafc !important;
+            color: #1d976c;
+            border-top: none;
+            padding: 12px;
+        }
+
+        .table-main tbody td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .total-section {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .grand-total {
+            font-size: 20px;
+            color: #1d976c;
+            font-weight: 800;
+        }
+
+        .payment-history-title {
+            background: #f1f5f9;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 4px;
+            margin-top: 30px;
+        }
+
+        @@media print {
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                padding: 0;
+            }
+
+            .invoice-wrapper {
+                padding: 20px;
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invoice-wrapper">
+        <div class="status-watermark @(Model.IsPaid ? "text-success" : "text-danger")">
+            @(Model.IsPaid ? "PAID" : "UNPAID")
+        </div>
+
+        <div class="header-top d-flex justify-content-between align-items-center">
+            <div>
+                <div class="company-logo">Nexus<span>.Acc</span></div>
+                <p class="mb-0 text-muted">Nexus Service Marketing PVT LTD.</p>
+                <small>Internet, Telecom & Support Services</small>
+            </div>
+            <div class="text-end">
+                <h1 class="fw-black text-uppercase mb-0" style="letter-spacing: 2px; color: #cbd5e1;">Invoice</h1>
+                <p class="mb-0 fw-bold">#INV-@Model.BillId</p>
+                <p class="mb-0 small text-muted">Generated: @Model.BillDate.ToString("dd MMM yyyy")</p>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-4">
+                <div class="info-label">Billed To</div>
+                <h5 class="fw-bold mb-1">@Model.Order.Customer.FullName</h5>
+                <p class="small text-muted mb-0">
+                    <i class="fa fa-phone"></i> @Model.Order.Customer.ContactNo<br />
+                    <i class="fa fa-envelope"></i> @Model.Order.Customer.Email
+                </p>
+            </div>
+            <div class="col-4 text-center">
+                <div class="info-label">Payment Due</div>
+                <h5 class="fw-bold text-danger">@Model.DueDate.ToString("dd MMM yyyy")</h5>
+            </div>
+            <div class="col-4 text-end">
+                <div class="info-label">Invoice Status</div>
+                @if (Model.IsPaid)
+                {
+                    <span class="badge bg-success px-3">PAID</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger px-3">OUTSTANDING</span>
+                }
+            </div>
+        </div>
+
+        <table class="table table-main">
+            <thead>
+                <tr>
+                    <th>Service Description</th>
+                    <th class="text-center">Rate</th>
+                    <th class="text-end">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="fw-bold">@Model.Order.Plan.PlanName Subscription</div>
+                        <small class="text-muted">High-speed internet/marketing service package</small>
+                    </td>
+                    <td class="text-center">@Model.PlanAmount.ToString("N2")</td>
+                    <td class="text-end fw-bold">@Model.PlanAmount.ToString("N2")</td>
+                </tr>
+                @if (Model.DiscountAmount > 0)
+                {
+                    <tr>
+                        <td colspan="2" class="text-end text-muted small">Special Discount</td>
+                        <td class="text-end text-danger">- @Model.DiscountAmount.ToString("N2")</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="2" class="text-end text-muted small">Sales Tax (@Model.TaxPercentage%)</td>
+                    <td class="text-end">@Model.TaxAmount.ToString("N2")</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row justify-content-end">
+            <div class="col-5">
+                <div class="total-section">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Subtotal:</span>
+                        <span class="fw-bold">Rs. @((Model.PlanAmount - Model.DiscountAmount).ToString("N2"))</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-top pt-2">
+                        <span class="fw-bold h5">Total Due:</span>
+                        <span class="grand-total">Rs. @Model.Amount.ToString("N2")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-history-title text-uppercase">Transaction History</div>
+        <table class="table table-sm table-borderless small mt-2">
+            <thead class="border-bottom">
+                <tr class="text-muted">
+                    <th>Txn Date</th>
+                    <th>Method</th>
+                    <th class="text-end">Amount Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Payments != null && Model.Payments.Any())
+                {
+                    foreach (var p in Model.Payments)
+                    {
+                        <tr>
+                            <td>@p.PaymentDate.ToString("dd-MM-yyyy")</td>
+                            <td>@p.PaymentMethod</td>
+                            <td class="text-end fw-bold">Rs. @p.PaidAmount.ToString("N2")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center py-3 text-muted italic">No payment transactions found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="mt-5 pt-4 border-top">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <p class="small text-muted mb-1"><strong>Note:</strong> This is a computer-generated invoice and does not require a physical signature.</p>
+                    <p class="small text-muted mb-0">System Accountant: @Model.GeneratedBy</p>
+                </div>
+                <div class="col-4 text-end">
+                    <button onclick="window.print()" class="btn btn-dark no-print btn-lg rounded-pill px-4">
+                        🖨 Print Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

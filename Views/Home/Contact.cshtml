@@ -1,0 +1,82 @@
+﻿@model Nexus_Service_Marketing.Models.Contact
+
+<div style="min-height: 90vh; padding: 150px 20px; background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; align-items: center; justify-content: center;">
+
+    <div style="max-width: 1000px; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); background: white; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); overflow: hidden;">
+
+        <div style="background: #1a237e; padding: 50px; color: white; display: flex; flex-direction: column; justify-content: center;">
+            <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
+                <h1 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff;">
+                    NEXUSE<span style="color: #d32f2f;">.net</span>
+                </h1>
+                <div style="width: 40px; height: 3px; background: #d32f2f; margin-top: 5px;"></div>
+            </div>
+
+            <h2 style="font-size: 28px; margin-bottom: 15px; font-weight: 800; color: white">Get In <span style="color: #d32f2f;">Touch</span></h2>
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 40px;">
+                Have questions about our broadband plans? Our team is here to help 24/7.
+            </p>
+
+            <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                <span style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">📍</span>
+                <span>123 Nexus Plaza, Business District, Karachi</span>
+            </div>
+
+            <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                <span style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">📞</span>
+                <span>0800-NEXUSE (639873)</span>
+            </div>
+        </div>
+
+        <div style="padding: 50px; background: white;">
+            <h3 style="color: #1a237e; font-weight: 700; margin-top: 0; margin-bottom: 25px; border-left: 4px solid #d32f2f; padding-left: 15px;">Send us a message</h3>
+
+            @if (ViewBag.Success != null)
+            {
+                <div style="background: #e6f4ea; color: #1e7e34; padding: 15px; border-radius: 10px; border-left: 5px solid #1e7e34; margin-bottom: 25px; font-weight: 600; font-size: 14px;">
+                    ✔ @ViewBag.Success
+                </div>
+            }
+
+            <form asp-action="Contact" method="post" style="display: flex; flex-direction: column; gap: 18px;">
+                @Html.AntiForgeryToken()
+
+                <div class="input-group">
+                    <input asp-for="Name" placeholder="Full Name"
+                           style="width: 100%; padding: 14px; border: 2px solid #f0f0f0; border-radius: 10px; outline: none; transition: 0.3s; font-size: 14px;"
+                           onfocus="this.style.borderColor='#1a237e'; this.style.backgroundColor='#f9faff';"
+                           onblur="this.style.borderColor='#f0f0f0'; this.style.backgroundColor='white';" />
+                </div>
+
+                <div class="input-group">
+                    <input asp-for="Email" placeholder="Email Address"
+                           style="width: 100%; padding: 14px; border: 2px solid #f0f0f0; border-radius: 10px; outline: none; transition: 0.3s; font-size: 14px;"
+                           onfocus="this.style.borderColor='#1a237e'; this.style.backgroundColor='#f9faff';"
+                           onblur="this.style.borderColor='#f0f0f0'; this.style.backgroundColor='white';" />
+                </div>
+
+                <div class="input-group">
+                    <input asp-for="Subject" placeholder="Subject"
+                           style="width: 100%; padding: 14px; border: 2px solid #f0f0f0; border-radius: 10px; outline: none; transition: 0.3s; font-size: 14px;"
+                           onfocus="this.style.borderColor='#1a237e'; this.style.backgroundColor='#f9faff';"
+                           onblur="this.style.borderColor='#f0f0f0'; this.style.backgroundColor='white';" />
+                </div>
+
+                <div class="input-group">
+                    <textarea asp-for="Message" placeholder="Your Message" rows="4"
+                              style="width: 100%; padding: 14px; border: 2px solid #f0f0f0; border-radius: 10px; outline: none; transition: 0.3s; font-size: 14px; resize: none;"
+                              onfocus="this.style.borderColor='#1a237e'; this.style.backgroundColor='#f9faff';"
+                              onblur="this.style.borderColor='#f0f0f0'; this.style.backgroundColor='white';"></textarea>
+                </div>
+
+                <button type="submit"
+                        style="background: #d32f2f; color: white; padding: 16px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: all 0.3s; box-shadow: 0 4px 15px rgba(211,47,47,0.2); letter-spacing: 1px;"
+                        onmouseover="this.style.background='#b71c1c'; this.style.transform='translateY(-2px)';"
+                        onmouseout="this.style.background='#d32f2f'; this.style.transform='translateY(0)';"
+                        onmousedown="this.style.transform='translateY(1px)';">
+                    Send Message →
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

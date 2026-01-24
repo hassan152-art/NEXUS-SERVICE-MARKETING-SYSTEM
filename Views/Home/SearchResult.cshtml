@@ -1,0 +1,228 @@
+﻿@model dynamic
+
+<div style="padding: 130px 15px; background-color: #f4f7f6; min-height: 80vh; font-family: 'Segoe UI', Tahoma, sans-serif;">
+    <div style="max-width: 800px; margin: 0 auto;">
+
+        <a href="javascript:history.back()" style="display: inline-block; margin-bottom: 20px; color: #1a237e; text-decoration: none; font-weight: 600; font-size: 14px;">
+            ← Back to Search
+        </a>
+
+        @if (Model.Type == "Order" || Model.Type == "Account")
+        {
+            <div style="background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e0e0e0;">
+                
+                <div style="background: #1a237e; padding: 25px 30px; display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="color: white; margin: 0; font-size: 20px; text-transform: uppercase; letter-spacing: 1px;">
+                        @(Model.Type == "Order" ? "📋 Order Tracking" : "🌐 Connection Details")
+                    </h3>
+                    <span style="background: rgba(255,255,255,0.2); color: white; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: 600;">
+                        @Model.Type ID: @(Model.Type == "Order" ? Model.OrderCode : Model.AccountId)
+                    </span>
+                </div>
+
+                <div style="padding: 40px 30px; border-bottom: 1px solid #f0f0f0; background: #fafafa;">
+                    <div style="display: flex; justify-content: space-between; position: relative; margin-bottom: 10px;">
+                        <div style="position: absolute; top: 15px; left: 0; width: 100%; height: 4px; background: #e0e0e0; z-index: 1;"></div>
+                        @{
+                            var status = Model.Status.ToString().ToLower();
+                            var progressWidth = "20%";
+                            if (status == "Pending") progressWidth = "20%";
+                            else if (status == "Approved" || status == "Active") progressWidth = "60%";
+                            else if (status == "Active" || status == "Complete") progressWidth = "100%";
+                        }
+                        <div style="position: absolute; top: 15px; left: 0; width: @progressWidth; height: 4px; background: #d32f2f; z-index: 2; transition: 1s ease;"></div>
+
+                        <div style="z-index: 3; text-align: center; width: 80px;">
+                            <div style="width: 30px; height: 30px; border-radius: 50%; background: #d32f2f; color: white; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</div>
+                            <span style="font-size: 11px; font-weight: 700; color: #1a237e; text-transform: uppercase;">Placed</span>
+                        </div>
+                        <div style="z-index: 3; text-align: center; width: 80px;">
+                            <div style="width: 30px; height: 30px; border-radius: 50%; background: @(progressWidth != "20%" ? "#d32f2f" : "#e0e0e0"); color: white; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">2</div>
+                            <span style="font-size: 11px; font-weight: 700; color: #1a237e; text-transform: uppercase;">Processing</span>
+                        </div>
+                        <div style="z-index: 3; text-align: center; width: 80px;">
+                            <div style="width: 30px; height: 30px; border-radius: 50%; background: @(progressWidth == "100%" ? "#d32f2f" : "#e0e0e0"); color: white; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">3</div>
+                            <span style="font-size: 11px; font-weight: 700; color: #1a237e; text-transform: uppercase;">Ready</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div style="padding: 15px; border: 1px solid #f0f0f0; border-radius: 10px;">
+                        <label style="display: block; font-size: 11px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Package / Plan</label>
+                        <span style="font-size: 16px; font-weight: 700; color: #333;">@Model.Plan</span>
+                    </div>
+
+                    <div style="padding: 15px; border: 1px solid #f0f0f0; border-radius: 10px;">
+                        <label style="display: block; font-size: 11px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Current Status</label>
+                        <span style="font-size: 16px; font-weight: 700; color: #d32f2f; text-transform: uppercase;">@Model.Status</span>
+                    </div>
+
+                    <div style="padding: 15px; border: 1px solid #f0f0f0; border-radius: 10px;">
+                        <label style="display: block; font-size: 11px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Registration Date</label>
+                        <span style="font-size: 16px; font-weight: 700; color: #333;">@Model.OrderDate.ToString("dd MMM, yyyy")</span>
+                    </div>
+
+                    <div style="padding: 15px; border: 1px solid #f0f0f0; border-radius: 10px;">
+                        <label style="display: block; font-size: 11px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Associated Account</label>
+                        <span style="font-size: 16px; font-weight: 700; color: #333;">@(Model.AccountId ?? "Processing...")</span>
+                    </div>
+                </div>
+
+                <div style="padding: 20px 30px; background: #fdfdfd; border-top: 1px solid #f0f0f0; text-align: right;">
+                    <p style="float: left; margin: 10px 0; font-size: 13px; color: #777;">Need help with this @Model.Type?</p>
+                    <a href="#" style="display: inline-block; padding: 10px 25px; background: #1a237e; color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600;">Contact Support</a>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+@* @model dynamic
+@{
+
+    string status = Model.Status.ToString().ToLower();
+
+    bool step1 = true;
+    bool step2 = status == "Approved" || status == "Active";
+    bool step3 = status == "Active";
+
+    string progressWidth = "20%";
+    if (status == "Approved") progressWidth = "60%";
+    else if (status == "Active") progressWidth = "100%";
+}
+
+<div style="padding:120px 15px; background:#f4f7f6; min-height:100vh; font-family:'Segoe UI',Tahoma,sans-serif;">
+
+    <div style="max-width:900px; margin:auto;">
+
+        <!-- BACK -->
+        <a href="javascript:history.back()"
+           style="display:inline-block;margin-bottom:20px;color:#1a237e;
+           text-decoration:none;font-weight:600;font-size:14px;">
+            ← Back
+        </a>
+
+        <!-- CARD -->
+        <div style="background:#fff;border-radius:16px;
+            box-shadow:0 15px 40px rgba(0,0,0,.08);
+            overflow:hidden;border:1px solid #e0e0e0;">
+
+            <!-- HEADER -->
+            <div style="background:#1a237e;padding:25px 30px;
+                display:flex;justify-content:space-between;align-items:center;">
+                <h3 style="color:#fff;margin:0;font-size:22px;letter-spacing:1px;">
+                    @(Model.Type == "Order" ? "📋 Order Tracking" : "🌐 Connection Details")
+                </h3>
+                <span style="background:rgba(255,255,255,.2);
+                    color:#fff;padding:6px 18px;border-radius:50px;
+                    font-size:13px;font-weight:600;">
+                    ID: @(Model.Type == "Order" ? Model.OrderCode : Model.AccountId)
+                </span>
+            </div>
+
+            <!-- STATUS BAR -->
+            <div style="padding:40px 30px;background:#fafafa;border-bottom:1px solid #eee;">
+
+                <div style="display:flex;justify-content:space-between;position:relative;">
+
+                    <div style="position:absolute;top:15px;left:0;width:100%;
+                        height:4px;background:#ddd;"></div>
+
+                    <div style="position:absolute;top:15px;left:0;
+                        width:@progressWidth;height:4px;background:#d32f2f;
+                        transition:1s;"></div>
+
+                    <!-- STEP 1 -->
+                    <div style="z-index:2;text-align:center;width:90px;">
+                        <div style="width:34px;height:34px;border-radius:50%;
+                            background:@(step1 ? "#d32f2f" : "#ccc");
+                            color:white;margin:auto;margin-bottom:8px;
+                            display:flex;align-items:center;justify-content:center;
+                            font-weight:bold;">
+                            1
+                        </div>
+                        <small style="font-weight:700;color:#1a237e;">PLACED</small>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div style="z-index:2;text-align:center;width:90px;">
+                        <div style="width:34px;height:34px;border-radius:50%;
+                            background:@(step2 ? "#d32f2f" : "#ccc");
+                            color:white;margin:auto;margin-bottom:8px;
+                            display:flex;align-items:center;justify-content:center;
+                            font-weight:bold;">
+                            2
+                        </div>
+                        <small style="font-weight:700;color:#1a237e;">APPROVED</small>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div style="z-index:2;text-align:center;width:90px;">
+                        <div style="width:34px;height:34px;border-radius:50%;
+                            background:@(step3 ? "#d32f2f" : "#ccc");
+                            color:white;margin:auto;margin-bottom:8px;
+                            display:flex;align-items:center;justify-content:center;
+                            font-weight:bold;">
+                            3
+                        </div>
+                        <small style="font-weight:700;color:#1a237e;">ACTIVE</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAILS -->
+            <div style="padding:35px;display:grid;
+                grid-template-columns:1fr 1fr;gap:25px;">
+
+                <div style="border:1px solid #eee;border-radius:12px;padding:18px;">
+                    <small style="color:#888;font-weight:700;">PLAN</small>
+                    <div style="font-size:17px;font-weight:700;">@Model.Plan</div>
+                </div>
+
+                <div style="border:1px solid #eee;border-radius:12px;padding:18px;">
+                    <small style="color:#888;font-weight:700;">STATUS</small>
+                    <div style="font-size:17px;font-weight:700;color:#d32f2f;">
+                        @Model.Status
+                    </div>
+                </div>
+
+                <div style="border:1px solid #eee;border-radius:12px;padding:18px;">
+                    <small style="color:#888;font-weight:700;">ORDER DATE</small>
+                    <div style="font-size:16px;font-weight:700;">
+                        @Model.OrderDate.ToString("dd MMM yyyy")
+                    </div>
+                </div>
+
+                <div style="border:1px solid #eee;border-radius:12px;padding:18px;">
+                    <small style="color:#888;font-weight:700;">ACCOUNT ID</small>
+                    <div style="font-size:16px;font-weight:700;">
+                        @(Model.AccountId ?? "Processing...")
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div style="padding:22px 30px;border-top:1px solid #eee;
+                display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:13px;color:#777;">
+                    Need help with this order?
+                </span>
+                <a href="#" style="padding:10px 28px;background:#1a237e;
+                    color:#fff;border-radius:10px;text-decoration:none;
+                    font-weight:600;">Contact Support</a>
+            </div>
+
+        </div>
+    </div>
+</div> *@

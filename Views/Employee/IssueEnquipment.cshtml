@@ -1,0 +1,178 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Issue History";
+}
+@model IEnumerable<EquipmentIssue>
+
+<style>
+    /* Table specific advanced styling */
+    .custom-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        padding: 20px 25px;
+        background: #fff;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        padding: 15px 20px;
+        border-bottom: 2px solid #f1f1f1;
+    }
+
+    .table tbody td {
+        padding: 15px 20px;
+        vertical-align: middle;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    /* Badge Styles for Status */
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .badge-issued {
+        background-color: #fff4e5;
+        color: #b25e09; /* Orange/Yellow for Issued */
+    }
+
+    .badge-returned {
+        background-color: #e8f5e9;
+        color: #2e7d32; /* Green for Returned */
+    }
+
+    /* Action Buttons */
+    .btn-return {
+        background-color: #ffffff;
+        border: 1px solid #d32f2f;
+        color: #d32f2f;
+        padding: 5px 15px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .btn-return:hover {
+            background-color: #d32f2f;
+            color: #ffffff;
+        }
+
+    .text-navy {
+        color: #1a237e;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0 text-navy">Equipment Issue History</h3>
+            <p class="text-muted small">Track and manage equipment given to customers</p>
+        </div>
+        <a asp-action="AddIssueEquipment" class="btn btn-red">
+            <i class="fa-solid fa-plus me-2"></i> Issue New Equipment
+        </a>
+    </div>
+
+    <div class="custom-card">
+        <div class="card-header-custom">
+            <h5 class="mb-0 text-secondary">Transaction Logs</h5>
+            <div class="input-group" style="width: 250px;">
+                <span class="input-group-text bg-light border-0"><i class="fa fa-search text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Filter history..." />
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Customer Details</th>
+                        <th>Equipment Info</th>
+                        <th>Issued By</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle p-2 me-2">
+                                        <i class="fa-solid fa-user text-secondary"></i>
+                                    </div>
+                                    <span class="fw-bold">@item.Customer.FullName</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="text-dark">@item.Equipment.EquipmentName</span>
+                                    <span class="text-muted extra-small" style="font-size: 0.75rem;">Serial: #EQ-@item.EquipmentId</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-muted">@item.Employee.Name</span>
+                            </td>
+                            <td>
+                                <span class="text-dark">@item.IssueDate.ToString("dd MMM yyyy")</span>
+                            </td>
+                            <td>
+                                @if (item.Status == "Issued")
+                                {
+                                    <span class="status-badge badge-issued">
+                                        <i class="fa-solid fa-clock me-1"></i> Issued
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge badge-returned">
+                                        <i class="fa-solid fa-check-circle me-1"></i> Returned
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                @if (item.Status == "Issued")
+                                {
+                                    <a asp-action="ReturnIssueEnquipment" asp-route-id="@item.IssueId" class="btn-return">
+                                        <i class="fa-solid fa-rotate-left"></i> Return
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small italic">Closed</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

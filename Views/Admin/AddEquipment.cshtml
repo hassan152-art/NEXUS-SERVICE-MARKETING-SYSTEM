@@ -1,0 +1,235 @@
+﻿@model Equipment
+@{
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    ViewData["Title"] = "Add Inventory Equipment";
+}
+
+<style>
+    /* Container for the form card */
+    .form-card-container {
+        max-width: 850px;
+        margin: 30px auto;
+    }
+
+    .custom-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    /* Professional Header */
+    .form-header {
+        background: #ffffff;
+        padding: 25px 35px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .form-header i {
+            font-size: 1.5rem;
+            color: #d32f2f; /* Nexus Red */
+        }
+
+        .form-header h4 {
+            color: #1a237e; /* Navy Blue */
+            font-weight: 700;
+            margin: 0;
+        }
+
+    /* Form Body */
+    .form-body {
+        padding: 35px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .form-group.full-width {
+        grid-column: span 3;
+    }
+
+    .form-label {
+        color: #5f6368;
+        font-weight: 600;
+        font-size: 0.88rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        background-color: #fcfcfc;
+        transition: all 0.2s ease;
+    }
+
+        .form-control:focus {
+            border-color: #d32f2f;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+            outline: none;
+        }
+
+    /* Input Groups */
+    .input-group-text {
+        background-color: #ffffff;
+        border-right: none;
+        color: #d32f2f;
+    }
+
+    .form-control.with-icon {
+        border-left: none;
+    }
+
+    /* Action Buttons */
+    .button-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 35px;
+        padding-top: 25px;
+        border-top: 1px solid #f1f1f1;
+    }
+
+    .btn-save-equipment {
+        flex: 2;
+        background: #d32f2f;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+        .btn-save-equipment:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.2);
+        }
+
+    .btn-cancel {
+        flex: 1;
+        background: #f8f9fa;
+        color: #5f6368;
+        border: 1px solid #ddd;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-cancel:hover {
+            background: #e9ecef;
+        }
+
+    @@media (max-width: 768px) {
+        .form-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    }
+</style>
+
+<div class="form-card-container">
+    <div class="custom-form-card">
+        <div class="form-header">
+            <i class="fa-solid fa-microchip"></i>
+            <div>
+                <h4>Add New Equipment</h4>
+                <p class="text-muted small mb-0">Record new hardware items in the central inventory</p>
+            </div>
+        </div>
+
+        <div class="form-body">
+            <form asp-action="AddEquipment" method="post">
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Equipment Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-box-open"></i></span>
+                            <input asp-for="EquipmentName" class="form-control with-icon" placeholder="e.g. Fiber Optic Router v2" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 1.5;">
+                        <label class="form-label">Equipment Category</label>
+                        <select asp-for="EquipmentType" class="form-control" required>
+                            <option value="">-- Select Type --</option>
+                            <option>Broadband</option>
+                            <option>Dialup</option>
+                            <option>Telephone</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 1.5;">
+                        <label class="form-label">Supplier / Vendor</label>
+                        <select asp-for="VendorId" class="form-control"
+                                asp-items="@(new SelectList(ViewBag.Vendors, "VendorId", "VendorName"))" required>
+                            <option value="">-- Select Vendor --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Unit Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₨</span>
+                            <input asp-for="Price" class="form-control with-icon" placeholder="0.00" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Warranty (Months)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-shield-halved"></i></span>
+                            <input asp-for="WarrantyMonths" class="form-control with-icon" placeholder="Months" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Total Stock</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-layer-group"></i></span>
+                            <input asp-for="TotalQuantity" class="form-control with-icon" placeholder="Quantity" required />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="btn-save-equipment">
+                        <i class="fa-solid fa-plus-circle"></i> Add to Inventory
+                    </button>
+                    <a asp-action="Equipments" class="btn-cancel">Back to Inventory</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

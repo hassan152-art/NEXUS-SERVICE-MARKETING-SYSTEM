@@ -1,0 +1,189 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Billing Management";
+}
+@model IEnumerable<Nexus_Service_Marketing.Models.Bill>
+
+<style>
+    /* Professional Table Styling */
+    .custom-table-container {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+        margin-top: 20px;
+    }
+
+    .table-header-panel {
+        padding: 20px 25px;
+        background: #fff;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 15px 20px;
+        border-bottom: 2px solid #f1f1f1;
+    }
+
+    .table tbody td {
+        padding: 16px 20px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+        color: #3c4043;
+    }
+
+    /* Status Badges */
+    .badge-pill-status {
+        padding: 6px 12px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: inline-block;
+        min-width: 80px;
+        text-align: center;
+    }
+
+    .bg-paid {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+
+    .bg-unpaid {
+        background: #fff8e1;
+        color: #f57f17;
+        border: 1px solid #ffecb3;
+    }
+
+    /* Order Code Styling */
+    .order-code-ref {
+        font-family: 'Consolas', monospace;
+        color: #1a237e;
+        font-weight: 700;
+        background: #f0f2f5;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+    }
+
+    /* Amount Styling */
+    .amount-text {
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    /* Action Buttons */
+    .btn-action-view {
+        background-color: #f1f3f4;
+        color: #1a237e;
+        border: 1px solid #dadce0;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-action-view:hover {
+            background-color: #1a237e;
+            color: #ffffff;
+        }
+
+    .btn-action-payment {
+        background-color: #ffffff;
+        color: #d32f2f;
+        border: 1px solid #d32f2f;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-action-payment:hover {
+            background-color: #d32f2f;
+            color: #ffffff;
+        }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0" style="color: #1a237e;">Billing & Invoices</h3>
+            <p class="text-muted small mb-0">Manage customer payments and financial records</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm"><i class="fa fa-download me-1"></i> Export PDF</button>
+        </div>
+    </div>
+
+    <div class="custom-table-container">
+        <div class="table-header-panel">
+            <h5 class="mb-0 text-secondary"><i class="fa-solid fa-file-invoice-dollar me-2"></i> All Bills</h5>
+            <div class="input-group" style="width: 300px;">
+                <span class="input-group-text bg-light border-0"><i class="fa fa-search text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Search customer or bill ID..." />
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Bill ID</th>
+                        <th>Order Code</th>
+                        <th>Customer Name</th>
+                        <th>Amount</th>
+                        <th>Payment Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var bill in Model)
+                    {
+                        <tr>
+                            <td><span class="text-muted">#@bill.BillId</span></td>
+                            <td><span class="order-code-ref">@bill.Order.OrderCode</span></td>
+                            <td>
+                                <div class="fw-bold">@bill.Order.Customer.FullName</div>
+                            </td>
+                            <td><span class="amount-text">Rs. @bill.Amount.ToString("N2")</span></td>
+                            <td>
+                                @if (bill.IsPaid)
+                                {
+                                    <span class="badge-pill-status bg-paid">Paid</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-pill-status bg-unpaid">Unpaid</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="BillDetails" asp-route-id="@bill.BillId" class="btn-action-view">
+                                        <i class="fa-solid fa-eye me-1"></i> View Bill
+                                    </a>
+                                    <a asp-controller="Employee" asp-action="BillPayment" asp-route-billId="@bill.BillId" class="btn-action-payment">
+                                        <i class="fa-solid fa-credit-card me-1"></i> Payments
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

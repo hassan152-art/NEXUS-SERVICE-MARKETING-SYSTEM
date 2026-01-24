@@ -1,0 +1,211 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    ViewData["Title"] = "Create User";
+}
+@model User
+
+<style>
+    /* Container Styling */
+    .form-card-container {
+        max-width: 800px;
+        margin: 20px auto;
+    }
+
+    .custom-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    /* Card Header */
+    .form-header {
+        background: #ffffff;
+        padding: 25px 30px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .form-header h4 {
+            color: #1a237e; /* Navy Blue */
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .form-header h4 i {
+                color: #d32f2f; /* Red Accent */
+            }
+
+    /* Form Body */
+    .form-body {
+        padding: 30px;
+    }
+
+    .form-label {
+        color: #5f6368;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 10px 15px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease-in-out;
+        background-color: #fdfdfd;
+    }
+
+        .form-control:focus {
+            border-color: #d32f2f;
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+            background-color: #fff;
+            outline: none;
+        }
+
+    /* Grid layout for fields */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Full width for certain fields */
+    .full-width {
+        grid-column: span 2;
+    }
+
+    /* Submit Button */
+    .btn-submit-advanced {
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        width: 100%;
+        font-size: 1rem;
+        transition: background 0.2s;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-submit-advanced:hover {
+            background-color: #b71c1c;
+            cursor: pointer;
+        }
+
+    /* Error Message */
+    .error-alert {
+        background-color: #fff5f5;
+        border-left: 4px solid #d32f2f;
+        color: #c62828;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Select Styling */
+    select.form-control {
+        cursor: pointer;
+    }
+
+    @@media (max-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .full-width {
+            grid-column: span 1;
+        }
+    }
+</style>
+
+<div class="form-card-container">
+    <div class="custom-form-card">
+        <div class="form-header">
+            <h4><i class="fa-solid fa-user-plus"></i> Create System User</h4>
+        </div>
+
+        <div class="form-body">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="Name" class="form-control" placeholder="John Doe" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="Email" class="form-control" placeholder="example@nexus.com" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="Password" class="form-control" placeholder="••••••••" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" name="DateOfBirth" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select name="Gender" class="form-control" required>
+                            <option value="">-- Select --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select name="Role" class="form-control" required>
+                            <option value="">-- Select --</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Employee">Employee</option>
+                            <option value="Accounts">Accounts</option>
+                            <option value="Technical">Technical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit-advanced">
+                    <i class="fa-solid fa-check-circle"></i> Complete Registration
+                </button>
+            </form>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="error-alert">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>@ViewBag.Error</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="/Admin/Users" class="text-muted text-decoration-none small">
+            <i class="fa-solid fa-arrow-left"></i> Back to User List
+        </a>
+    </div>
+</div>

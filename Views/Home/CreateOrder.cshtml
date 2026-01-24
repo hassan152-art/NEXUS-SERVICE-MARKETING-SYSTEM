@@ -1,0 +1,73 @@
+﻿@model Customer
+
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 130px 15px; background-color: #f4f7f6;">
+    <div style="width: 100%; max-width: 550px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e0e0e0;">
+
+        <div style="background: #1a237e; padding: 30px; text-align: center;">
+            <h2 style="color: white; margin: 0; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                Enter Order Details
+            </h2>
+            <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0; font-size: 14px; line-height: 1.5;">
+                Please provide accurate customer information to initiate the new service connection process.
+            </p>
+        </div>
+
+        <div style="padding: 40px;">
+            <form method="post" style="display: flex; flex-direction: column; gap: 20px;">
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: 700; margin-bottom: 8px; color: #5f6368; font-size: 12px; text-transform: uppercase;">Full Name</label>
+                    <input name="FullName" placeholder="e.g. Muhammad Ahmed"
+                           style="padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; transition: all 0.3s; outline: none;"
+                           onfocus="this.style.borderColor='#1a237e'; this.style.boxShadow='0 0 0 3px rgba(26,35,126,0.1)'"
+                           onblur="this.style.borderColor='#dcdcdc'; this.style.boxShadow='none'" required />
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 700; margin-bottom: 8px; color: #5f6368; font-size: 12px; text-transform: uppercase;">CNIC Number</label>
+                        <input name="CNIC" type="number" placeholder="42101-XXXXXXX-X"
+                               style="padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; transition: all 0.3s; outline: none;"
+                               onfocus="this.style.borderColor='#1a237e'; this.style.boxShadow='0 0 0 3px rgba(26,35,126,0.1)'"
+                               onblur="this.style.borderColor='#dcdcdc'; this.style.boxShadow='none'" required />
+                    </div>
+
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 700; margin-bottom: 8px; color: #5f6368; font-size: 12px; text-transform: uppercase;">Contact No</label>
+                        <input name="ContactNo" type="number" placeholder="03XXXXXXXXX"
+                               style="padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; transition: all 0.3s; outline: none;"
+                               onfocus="this.style.borderColor='#1a237e'; this.style.boxShadow='0 0 0 3px rgba(26,35,126,0.1)'"
+                               onblur="this.style.borderColor='#dcdcdc'; this.style.boxShadow='none'" required />
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: 700; margin-bottom: 8px; color: #5f6368; font-size: 12px; text-transform: uppercase;">Email Address</label>
+                    <input name="Email" type="email" placeholder="customer@example.com"
+                           style="padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; transition: all 0.3s; outline: none;"
+                           onfocus="this.style.borderColor='#1a237e'; this.style.boxShadow='0 0 0 3px rgba(26,35,126,0.1)'"
+                           onblur="this.style.borderColor='#dcdcdc'; this.style.boxShadow='none'" required />
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: 700; margin-bottom: 8px; color: #5f6368; font-size: 12px; text-transform: uppercase;">Service Address</label>
+                    <textarea name="Address" rows="3" placeholder="Enter complete physical address for installation"
+                              style="padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; resize: none; font-family: inherit; transition: all 0.3s; outline: none;"
+                              onfocus="this.style.borderColor='#1a237e'; this.style.boxShadow='0 0 0 3px rgba(26,35,126,0.1)'"
+                              onblur="this.style.borderColor='#dcdcdc'; this.style.boxShadow='none'"></textarea>
+                </div>
+
+                <button type="submit"
+                        style="padding: 15px; background-color: #d32f2f; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(211,47,47,0.2);"
+                        onmouseover="this.style.backgroundColor='#b71c1c'; this.style.transform='translateY(-2px)'"
+                        onmouseout="this.style.backgroundColor='#d32f2f'; this.style.transform='translateY(0)'">
+                    Proceed to Order
+                </button>
+            </form>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eee;">
+            <p style="margin: 0; color: #999; font-size: 13px;">NEXUSE.net - Authorized Personnel Access Only</p>
+        </div>
+    </div>
+</div>

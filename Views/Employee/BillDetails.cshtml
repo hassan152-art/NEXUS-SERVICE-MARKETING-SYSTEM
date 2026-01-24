@@ -1,0 +1,241 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Invoice Details";
+}
+@model Bill
+
+<style>
+    .invoice-container {
+        max-width: 850px;
+        margin: 30px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
+
+    /* Invoice Header */
+    .invoice-header {
+        background: #1a237e;
+        color: white;
+        padding: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-section h2 {
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+    /* Info Grid */
+    .invoice-info-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 30px 40px;
+        gap: 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-box label {
+        display: block;
+        color: #6b7280;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .info-box span {
+        font-weight: 600;
+        color: #1f2937;
+        font-size: 1rem;
+    }
+
+    /* Table Styling */
+    .billing-table {
+        width: 100%;
+        margin: 0;
+    }
+
+        .billing-table th {
+            background: #fff;
+            color: #5f6368;
+            font-weight: 600;
+            padding: 15px 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .billing-table td {
+            padding: 15px 40px;
+            text-align: right;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+        }
+
+    .total-row {
+        background: #fdf2f2;
+    }
+
+        .total-row td, .total-row th {
+            color: #d32f2f !important;
+            font-size: 1.2rem !important;
+            font-weight: 800 !important;
+        }
+
+    /* Status & Actions */
+    .invoice-footer {
+        padding: 30px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .status-badge {
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .paid {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+
+    .unpaid {
+        background: #fff8e1;
+        color: #f57f17;
+        border: 1px solid #ffecb3;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-nexus {
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-pay {
+        background: #2e7d32;
+        color: white;
+        border: none;
+    }
+
+        .btn-pay:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+    .btn-history {
+        background: #1a237e;
+        color: white;
+        border: none;
+    }
+
+        .btn-history:hover {
+            background: #0d1440;
+            transform: translateY(-2px);
+        }
+
+    .btn-print {
+        border: 1px solid #374151;
+        color: #374151;
+    }
+
+        .btn-print:hover {
+            background: #f3f4f6;
+        }
+</style>
+
+<div class="container py-4">
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="brand-section">
+                <h2>NEXUS</h2>
+                <p class="mb-0 opacity-75">Official Service Invoice</p>
+            </div>
+            <div class="text-end">
+                <h4 class="mb-0">#@Model.BillId</h4>
+                <small class="opacity-75">Invoice ID</small>
+            </div>
+        </div>
+
+        <div class="invoice-info-section">
+            <div class="info-box">
+                <label>Customer Name</label>
+                <span><i class="fa fa-user me-2 text-muted"></i>@Model.Order.Customer.FullName</span>
+            </div>
+            <div class="info-box">
+                <label>Order Reference</label>
+                <span><i class="fa fa-hashtag me-2 text-muted"></i>@Model.Order.OrderCode</span>
+            </div>
+            <div class="info-box">
+                <label>Billing Date</label>
+                <span><i class="fa fa-calendar me-2 text-muted"></i>@Model.BillDate.ToString("dd MMM yyyy")</span>
+            </div>
+            <div class="info-box">
+                <label>Due Date</label>
+                <span class="text-danger"><i class="fa fa-calendar-times me-2"></i>@Model.DueDate.ToString("dd MMM yyyy")</span>
+            </div>
+        </div>
+
+        <table class="billing-table">
+            <tr>
+                <th class="text-start">Service Plan Amount</th>
+                <td>Rs. @Model.PlanAmount.ToString("N2")</td>
+            </tr>
+            <tr>
+                <th class="text-start">Discount</th>
+                <td class="text-success">- Rs. @Model.DiscountAmount.ToString("N2")</td>
+            </tr>
+            <tr>
+                <th class="text-start">Tax (@Model.TaxPercentage%)</th>
+                <td>+ Rs. @Model.TaxAmount.ToString("N2")</td>
+            </tr>
+            <tr class="total-row">
+                <th class="text-start">Grand Total</th>
+                <td>Rs. @Model.Amount.ToString("N2")</td>
+            </tr>
+        </table>
+
+        <div class="invoice-footer">
+            <div>
+                <span class="status-badge @(Model.IsPaid ? "paid" : "unpaid")">
+                    <i class="fa-solid @(Model.IsPaid ? "fa-circle-check" : "fa-circle-exclamation") me-2"></i>
+                    @(Model.IsPaid ? "Payment Verified" : "Payment Pending")
+                </span>
+            </div>
+            <div class="action-buttons">
+                <a asp-controller="Employee" asp-action="ReceviedPayement" asp-route-billId="@Model.BillId" class="btn-nexus btn-pay">
+                    <i class="fa-solid fa-plus"></i> Collect Payment
+                </a>
+                <a asp-controller="Employee" asp-action="BillPayment" asp-route-billId="@Model.BillId" class="btn-nexus btn-history">
+                    <i class="fa-solid fa-history"></i> Ledger
+                </a>
+                <a asp-controller="Employee" asp-action="Invoice" asp-route-id="@Model.BillId" class="btn-nexus btn-print">
+                    <i class="fa-solid fa-file-invoice"></i> PDF/Print
+                </a>
+                <a asp-action="BillView" class="btn btn-link text-muted fw-bold text-decoration-none">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

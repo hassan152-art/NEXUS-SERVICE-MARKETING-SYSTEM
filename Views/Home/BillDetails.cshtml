@@ -1,0 +1,96 @@
+﻿@model Bill
+
+<div style="padding: 130px 20px; background-color: #f4f7f6; min-height: 100vh; font-family: 'Segoe UI', Tahoma, sans-serif;">
+    <div style="max-width: 800px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; border-top: 8px solid #1a237e;">
+
+        <div style="padding: 40px; display: flex; justify-content: space-between; align-items: flex-start; background: #fafafa; border-bottom: 1px solid #eee;">
+            <div>
+                <h1 style="color: #1a237e; margin: 0; font-size: 32px; font-weight: 800;">INVOICE</h1>
+                <p style="color: #d32f2f; font-weight: 700; margin: 5px 0 0 0; letter-spacing: 1px;">#INV-@Model.BillId.ToString("D5")</p>
+            </div>
+            <div style="text-align: right;">
+                <h2 style="color: #1a237e; margin: 0; font-size: 20px;">NEXUSE<span style="color: #d32f2f;">.net</span></h2>
+                <p style="color: #777; font-size: 12px; margin: 5px 0 0 0;">Official Service Invoice</p>
+            </div>
+        </div>
+
+        <div style="padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div>
+                <h4 style="color: #555; text-transform: uppercase; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">Billed To:</h4>
+                <p style="margin: 0; font-size: 18px; font-weight: 700; color: #333;">@Model.Order.Customer.FullName</p>
+                <p style="margin: 5px 0 0 0; color: #666; font-size: 14px;">Order Ref: #@Model.OrderId</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="margin-bottom: 10px;">
+                    <span style="color: #999; font-size: 13px;">Issue Date:</span>
+                    <span style="color: #333; font-weight: 600; margin-left: 10px;">@Model.BillDate.ToString("dd MMM, yyyy")</span>
+                </div>
+                <div>
+                    <span style="color: #999; font-size: 13px;">Due Date:</span>
+                    <span style="color: #d32f2f; font-weight: 600; margin-left: 10px;">@Model.DueDate.ToString("dd MMM, yyyy")</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 0 40px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #1a237e; color: white;">
+                        <th style="padding: 15px; text-align: left; font-size: 13px; border-radius: 6px 0 0 6px;">Description</th>
+                        <th style="padding: 15px; text-align: right; font-size: 13px; border-radius: 0 6px 6px 0;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 20px; color: #333;">Service Plan Charges</td>
+                        <td style="padding: 20px; text-align: right; color: #333;">Rs. @Model.PlanAmount.ToString("N2")</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 20px; color: #e67e22;">Discount Applied</td>
+                        <td style="padding: 20px; text-align: right; color: #e67e22;">- Rs. @Model.DiscountAmount.ToString("N2")</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 20px; color: #333;">Tax (@Model.TaxPercentage%)</td>
+                        <td style="padding: 20px; text-align: right; color: #333;">+ Rs. @Model.TaxAmount.ToString("N2")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="padding: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <div style="margin-bottom: 10px;">
+                    <span style="font-size: 13px; color: #999; text-transform: uppercase;">Payment Status</span>
+                </div>
+                @if (Model.IsPaid)
+                {
+                    <span style="background: #e6f4ea; color: #1e7e34; padding: 10px 25px; border-radius: 50px; font-weight: 800; font-size: 14px;">PAID</span>
+                }
+                else
+                {
+                    <span style="background: #fce8e8; color: #d93025; padding: 10px 25px; border-radius: 50px; font-weight: 800; font-size: 14px;">UNPAID</span>
+                }
+            </div>
+            <div style="text-align: right; background: #1a237e; padding: 20px 35px; border-radius: 12px; color: white;">
+                <p style="margin: 0; font-size: 12px; text-transform: uppercase; opacity: 0.8;">Total Payable</p>
+                <h2 style="margin: 5px 0 0 0; font-size: 30px; font-weight: 800;">Rs. @Model.Amount.ToString("N2")</h2>
+            </div>
+        </div>
+
+        <div style="padding: 30px 40px; background: #fdfdfd; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+            <button onclick="window.print()" style="background: white; border: 1px solid #ccc; padding: 10px 20px; border-radius: 6px; cursor: pointer; color: #555; font-weight: 600;">
+                🖨️ Print Invoice
+            </button>
+            <div style="display: flex; gap: 15px;">
+                <a asp-action="Payments" asp-route-billId="@Model.BillId"
+                   style="background: #27ae60; color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: 700; transition: 0.3s; box-shadow: 0 4px 10px rgba(39,174,96,0.2);">
+                    Payment Details
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
+        This is a computer-generated invoice. No signature required.
+    </div>
+</div>

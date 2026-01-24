@@ -1,0 +1,170 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Confirm Return";
+}
+@model EquipmentIssue
+
+<style>
+    /* Container for the confirmation card */
+    .form-card-container {
+        max-width: 600px;
+        margin: 40px auto;
+    }
+
+    .custom-form-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    /* Card Header */
+    .form-header {
+        background: #ffffff;
+        padding: 25px 30px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .form-header h4 {
+            color: #1a237e; /* Navy Blue */
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+            .form-header h4 i {
+                color: #d32f2f; /* Red Accent */
+            }
+
+    /* Warning Alert Styling */
+    .warning-alert {
+        background-color: #fff8e1;
+        border-left: 4px solid #ffb300;
+        padding: 15px 20px;
+        margin: 20px 30px 0 30px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Details List Styling */
+    .form-body {
+        padding: 30px;
+    }
+
+    .details-group {
+        border: 1px solid #f1f1f1;
+        border-radius: 8px;
+        background-color: #fdfdfd;
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+    .detail-label {
+        color: #5f6368;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        color: #1a237e;
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+
+    /* Submit Button (Matching Customer Style) */
+    .btn-submit-advanced {
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        width: 100%;
+        font-size: 1rem;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .btn-submit-advanced:hover {
+            background-color: #b71c1c;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(183, 28, 28, 0.2);
+        }
+
+    .btn-back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #666;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+        .btn-back-link:hover {
+            color: #d32f2f;
+        }
+</style>
+
+<div class="form-card-container">
+    <div class="custom-form-card">
+        <div class="form-header">
+            <h4><i class="fa-solid fa-rotate-left"></i> Confirm Equipment Return</h4>
+        </div>
+
+        <div class="warning-alert">
+            <i class="fa-solid fa-triangle-exclamation text-warning"></i>
+            <span>Please verify that the equipment has been received in good condition.</span>
+        </div>
+
+        <div class="form-body">
+            <div class="details-group">
+                <div class="detail-row">
+                    <span class="detail-label">Equipment Name</span>
+                    <span class="detail-value">@Model.Equipment.EquipmentName</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Current Status</span>
+                    <span class="detail-value text-danger">@Model.Status</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Issued Date</span>
+                    <span class="detail-value">@Model.IssueDate.ToString("dd MMM yyyy")</span>
+                </div>
+            </div>
+
+            <form asp-action="ReturnConfirmed" method="post">
+                <input type="hidden" name="IssueId" value="@Model.IssueId" />
+
+                <button type="submit" class="btn-submit-advanced">
+                    <i class="fa-solid fa-circle-check"></i> Confirm & Mark Returned
+                </button>
+            </form>
+
+            <a asp-action="IssueHistory" class="btn-back-link">
+                <i class="fa-solid fa-arrow-left"></i> Cancel and Go Back
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Payment>
+
+<div style="padding: 130px 20px; background-color: #f4f7f6; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <div style="max-width: 900px; margin: 0 auto 30px auto; border-left: 6px solid #d32f2f; padding-left: 20px;">
+        <h2 style="color: #1a237e; margin: 0; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+            Payment History
+        </h2>
+        <p style="color: #666; margin: 5px 0 0 0;">Review your recent transactions and payment status</p>
+    </div>
+
+    <div style="max-width: 900px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #e0e0e0;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background: #1a237e; color: white;">
+                    <th style="padding: 18px 25px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Transaction Date</th>
+                    <th style="padding: 18px 25px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Amount</th>
+                    <th style="padding: 18px 25px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Method</th>
+                    <th style="padding: 18px 25px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; text-align: center;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" style="padding: 50px; text-align: center; color: #999;">
+                            <div style="font-size: 40px; margin-bottom: 10px;">💳</div>
+                            <p>No payment records found.</p>
+                        </td>
+                    </tr>
+                }
+                @foreach (var p in Model)
+                {
+                    <tr style="border-bottom: 1px solid #f2f2f2; transition: background 0.2s;" onmouseover="this.style.background='#fcfcfd'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 20px 25px; color: #333; font-weight: 500;">
+                            @p.PaymentDate.ToString("MMM dd, yyyy")
+                        </td>
+                        <td style="padding: 20px 25px; color: #1a237e; font-weight: 800; font-size: 16px;">
+                            Rs. @p.PaidAmount.ToString("N2")
+                        </td>
+                        <td style="padding: 20px 25px;">
+                            <span style="background: #f1f3f5; color: #495057; padding: 5px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; border: 1px solid #dee2e6;">
+                                🏦 @p.PaymentMethod
+                            </span>
+                        </td>
+                        <td style="padding: 20px 25px; text-align: center;">
+                            @{
+                                var statusBg = "#eee";
+                                var statusColor = "#666";
+                                if (p.Status.ToLower() == "completed" || p.Status.ToLower() == "success") { statusBg = "#d4edda"; statusColor = "#155724"; }
+                                else if (p.Status.ToLower() == "pending") { statusBg = "#fff3cd"; statusColor = "#856404"; }
+                                else { statusBg = "#f8d7da"; statusColor = "#721c24"; }
+                            }
+                            <span style="background: @statusBg; color: @statusColor; padding: 6px 15px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase;">
+                                @p.Status
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div style="max-width: 900px; margin: 30px auto; text-align: left;">
+        <a href="javascript:history.back()" style="color: #1a237e; text-decoration: none; font-weight: 600; font-size: 14px;">
+            ← Return to Dashboard
+        </a>
+    </div>
+</div>

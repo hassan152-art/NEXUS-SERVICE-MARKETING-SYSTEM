@@ -1,0 +1,198 @@
+﻿@{
+    Layout = "~/Views/Shared/_Employee_Layout.cshtml";
+    ViewData["Title"] = "Payment Management";
+}
+@model IEnumerable<Payment>
+
+<style>
+    /* Main Table Container */
+    .custom-table-container {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+        margin-top: 20px;
+    }
+
+    .table-header-panel {
+        padding: 20px 25px;
+        background: #fff;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Table Head Styling */
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 15px 20px;
+        border-bottom: 2px solid #f1f1f1;
+    }
+
+    .table tbody td {
+        padding: 16px 20px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+        color: #3c4043;
+    }
+
+    /* Status Pills */
+    .status-pill {
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        display: inline-block;
+    }
+
+    .status-verified {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+
+    .status-pending {
+        background: #fff8e1;
+        color: #f57f17;
+        border: 1px solid #ffecb3;
+    }
+
+    /* Custom Buttons */
+    .btn-action-verify {
+        background-color: #1a237e;
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: 0.2s;
+        text-decoration: none;
+    }
+
+        .btn-action-verify:hover {
+            background-color: #2e7d32;
+            color: white;
+        }
+
+    .btn-action-delete {
+        background-color: #fff;
+        color: #d32f2f;
+        border: 1px solid #d32f2f;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: 0.2s;
+        text-decoration: none;
+    }
+
+        .btn-action-delete:hover {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+    .bill-ref-badge {
+        font-family: 'Consolas', monospace;
+        background: #f0f2f5;
+        color: #1a237e;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0" style="color: #1a237e;">Payment Collections</h3>
+            <p class="text-muted small mb-0">Monitor and verify all customer transactions</p>
+        </div>
+    </div>
+
+    <div class="custom-table-container">
+        <div class="table-header-panel">
+            <h5 class="mb-0 text-secondary"><i class="fa-solid fa-money-bill-transfer me-2"></i> All Payments</h5>
+            <div class="input-group" style="width: 300px;">
+                <span class="input-group-text bg-light border-0"><i class="fa fa-search text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Search customer or bill..." />
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Bill Reference</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="text-dark fw-bold">@p.PaymentDate.ToString("dd MMM yyyy")</span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="fw-bold">@p.Bill.Order.Customer.FullName</span>
+                                    <small class="text-muted">ID: @p.Bill.Order.CustomerId</small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="bill-ref-badge">#@p.BillId</span>
+                            </td>
+                            <td>
+                                <span class="text-success fw-bold">Rs. @p.PaidAmount.ToString("N2")</span>
+                            </td>
+                            <td>
+                                <span class="text-secondary"><i class="fa-solid fa-credit-card me-1 small"></i> @p.PaymentMethod</span>
+                            </td>
+                            <td>
+                                @if (p.Status == "Verified")
+                                {
+                                    <span class="status-pill status-verified">Verified</span>
+                                }
+                                else
+                                {
+                                    <span class="status-pill status-pending">@p.Status</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    @if (User.IsInRole("Accounts") && p.Status != "Verified")
+                                    {
+                                        <a asp-action="Verify" asp-route-id="@p.PaymentId" class="btn-action-verify">
+                                            <i class="fa-solid fa-check me-1"></i> Verify
+                                        </a>
+                                    }
+
+                                    @if (User.IsInRole("Employee"))
+                                    {
+                                        <a asp-action="DeletePayment" asp-route-id="@p.PaymentId" class="btn-action-delete">
+                                            <i class="fa-solid fa-trash-can me-1"></i> Delete
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

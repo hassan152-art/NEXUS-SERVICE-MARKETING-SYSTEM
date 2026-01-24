@@ -1,0 +1,92 @@
+﻿@model Nexus_Service_Marketing.Models.User // Aapka User Model
+@{
+    Layout = "~/Views/Shared/_Accounts_Layout.cshtml";
+    ViewData["Title"] = "Account Settings";
+}
+
+<div class="container-fluid py-4">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i> @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-4">Profile Settings</h4>
+                    
+                    <form asp-controller="Accounts" asp-action="UpdateProfile" method="post">
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted fw-semibold">Account Name</label>
+                            <input type="text" name="accountName" class="form-control bg-light border-0 py-3 rounded-3" 
+                                   value="@ViewBag.AccountName" placeholder="Enter your name">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted fw-semibold">System Role</label>
+                            <input type="text" class="form-control bg-light border-0 py-3 rounded-3 text-secondary" 
+                                   value="@ViewBag.Role" readonly>
+                            <small class="text-muted mt-1 d-block italic">* Role cannot be changed by the user.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 py-3 rounded-pill fw-bold shadow-sm mt-2 transition-all">
+                            Update Profile
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-4">System Preferences</h4>
+                    <p class="text-muted mb-4 small">Manage how the accounts portal behaves and your notification settings.</p>
+
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 bg-light mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-circle bg-white shadow-sm rounded-circle p-2 me-3">
+                                <i class="fa-solid fa-receipt text-primary"></i>
+                            </div>
+                            <span class="fw-medium">Auto-generate receipt on payment</span>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input custom-switch" type="checkbox" id="receiptSwitch" checked>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 bg-light mb-3 opacity-75">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-circle bg-white shadow-sm rounded-circle p-2 me-3">
+                                <i class="fa-solid fa-envelope-open-text text-secondary"></i>
+                            </div>
+                            <span class="fw-medium">Email notification for pending bills</span>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input custom-switch" type="checkbox" id="emailSwitch">
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info border-0 bg-info-subtle mt-4 rounded-3 small text-primary">
+                        <i class="fa-solid fa-circle-info me-2"></i> Preferences are saved automatically to your local session.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .transition-all { transition: all 0.3s ease; }
+    .btn-success:hover { background-color: #157347; transform: translateY(-2px); }
+    .bg-light { background-color: #f8f9fa !important; }
+    .form-control:focus { background-color: #fff !important; box-shadow: 0 0 0 0.25 margin-bottom: 10px; border: 1px solid #198754; }
+    .custom-switch { width: 3em !important; height: 1.5em !important; cursor: pointer; }
+    .icon-circle { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+</style>

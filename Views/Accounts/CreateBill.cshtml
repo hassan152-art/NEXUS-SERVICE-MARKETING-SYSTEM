@@ -1,0 +1,220 @@
+﻿@model Bill
+@{
+    Layout = "~/Views/Shared/_Accounts_Layout.cshtml";
+}
+
+<style>
+    .billing-container {
+        max-width: 900px;
+        margin: 20px auto;
+    }
+
+    .form-card {
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        border: none;
+        overflow: hidden;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #1d976c 0%, #11998e 100%);
+        padding: 30px;
+        color: white;
+    }
+
+    .input-group-custom {
+        margin-bottom: 20px;
+    }
+
+        .input-group-custom label {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+    .form-control-custom {
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: 2px solid #e2e8f0;
+        transition: 0.3s;
+        background: #f8fafc;
+    }
+
+        .form-control-custom:focus {
+            border-color: #1d976c;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(29, 151, 108, 0.1);
+            outline: none;
+        }
+
+        .form-control-custom[readonly] {
+            background-color: #f1f5f9;
+            cursor: not-allowed;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+    /* Summary Panel */
+    .summary-panel {
+        background: #f0fdf4;
+        border-radius: 15px;
+        padding: 25px;
+        border: 1px dashed #1d976c;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+
+    .total-divider {
+        border-top: 2px solid #1d976c;
+        margin: 15px 0;
+        padding-top: 15px;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #1d976c 0%, #11998e 100%);
+        border: none;
+        padding: 15px 30px;
+        border-radius: 12px;
+        font-weight: 700;
+        width: 100%;
+        color: white;
+        transition: 0.3s;
+        margin-top: 20px;
+    }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(29, 151, 108, 0.3);
+        }
+</style>
+
+<div class="billing-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h3 class="mb-1"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Generate New Invoice</h3>
+            <p class="mb-0 opacity-75 small">Create a professional bill for Order #@Model.OrderId</p>
+        </div>
+
+        <div class="p-4 p-md-5">
+            <form asp-action="CreateBill" method="post">
+                @Html.HiddenFor(m => m.OrderId)
+                @Html.HiddenFor(m => m.GeneratedBy, new { Value = User.Identity?.Name ?? "Accounts" })
+
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="input-group-custom">
+                            <label><i class="fa-solid fa-money-bill-wave me-2"></i> Base Plan Amount</label>
+                            <input id="planAmount" asp-for="PlanAmount" class="form-control-custom w-100" readonly />
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label><i class="fa-solid fa-tags me-2"></i> Apply Discount (Flat)</label>
+                            <input id="discount" asp-for="DiscountAmount" class="form-control-custom w-100" placeholder="0.00" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-custom">
+                                    <label><i class="fa-solid fa-percent me-2"></i> Tax Rate (%)</label>
+                                    <input id="taxPercent" asp-for="TaxPercentage" class="form-control-custom w-100" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group-custom">
+                                    <label><i class="fa-solid fa-calendar-day me-2"></i> Payment Due Date</label>
+                                    <input asp-for="DueDate" type="date" class="form-control-custom w-100" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="summary-panel h-100">
+                            <h6 class="fw-bold text-success mb-4 text-uppercase">Invoice Summary</h6>
+
+                            <div class="summary-item">
+                                <span class="text-muted">Sub-Total:</span>
+                                <span class="fw-bold">Rs. <span id="lblSubTotal">0.00</span></span>
+                            </div>
+
+                            <div class="summary-item">
+                                <span class="text-muted">Discount:</span>
+                                <span class="text-danger fw-bold">- Rs. <span id="lblDiscount">0.00</span></span>
+                            </div>
+
+                            <div class="summary-item">
+                                <span class="text-muted">Tax Amount:</span>
+                                <span class="fw-bold">Rs. <span id="lblTax">0.00</span></span>
+                            </div>
+
+                            <div class="total-divider">
+                                <div class="summary-item mb-0">
+                                    <span class="h5 fw-bold">Grand Total:</span>
+                                    <span class="h5 fw-bold text-success">Rs. <span id="lblTotal">0.00</span></span>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="taxAmount" asp-for="TaxAmount" />
+                            <input type="hidden" id="totalAmount" asp-for="Amount" />
+
+                            <button type="submit" class="btn-save">
+                                <i class="fa-solid fa-check-double me-2"></i> Finalize & Save Bill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Orders" class="text-muted text-decoration-none small">
+            <i class="fa-solid fa-arrow-left me-1"></i> Return to Orders List
+        </a>
+    </div>
+</div>
+
+<script>
+    const planInput = document.getElementById("planAmount");
+    const discountInput = document.getElementById("discount");
+    const taxPercentInput = document.getElementById("taxPercent");
+    const taxAmountInput = document.getElementById("taxAmount");
+    const totalAmountInput = document.getElementById("totalAmount");
+
+    // Labels for display
+    const lblSubTotal = document.getElementById("lblSubTotal");
+    const lblDiscount = document.getElementById("lblDiscount");
+    const lblTax = document.getElementById("lblTax");
+    const lblTotal = document.getElementById("lblTotal");
+
+    function recalc() {
+        const plan = parseFloat(planInput.value) || 0;
+        const discount = parseFloat(discountInput.value) || 0;
+        const taxPercent = parseFloat(taxPercentInput.value) || 0;
+
+        const taxable = plan - discount;
+        const tax = (taxable * taxPercent) / 100;
+        const total = taxable + tax;
+
+        // Update hidden inputs for Database
+        taxAmountInput.value = tax.toFixed(2);
+        totalAmountInput.value = total.toFixed(2);
+
+        // Update visual labels
+        lblSubTotal.innerText = plan.toLocaleString();
+        lblDiscount.innerText = discount.toLocaleString();
+        lblTax.innerText = tax.toLocaleString();
+        lblTotal.innerText = total.toLocaleString();
+    }
+
+    discountInput.addEventListener("input", recalc);
+    document.addEventListener("DOMContentLoaded", recalc); // Initial calc
+</script>

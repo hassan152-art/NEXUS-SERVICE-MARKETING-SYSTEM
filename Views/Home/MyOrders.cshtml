@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Order>
+
+<div style="padding: 130px 20px; background-color: #f8f9fa; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <div style="max-width: 1000px; margin: 0 auto 30px auto; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="color: #1a237e; margin: 0; font-size: 28px; font-weight: 800;">My Orders</h2>
+            <p style="color: #666; margin: 5px 0 0 0;">View and track your connection requests</p>
+        </div>
+    </div>
+
+    <div style="max-width: 1000px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eef0f2;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background: #1a237e; color: white;">
+                    <th style="padding: 18px 20px; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Order Code</th>
+                    <th style="padding: 18px 20px; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Connection Type</th>
+                    <th style="padding: 18px 20px; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Order Date</th>
+                    <th style="padding: 18px 20px; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; text-align: center;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" style="padding: 50px; text-align: center; color: #999; font-style: italic;">
+                            No orders found. Start by placing your first order!
+                        </td>
+                    </tr>
+                }
+                @foreach (var o in Model)
+                {
+                    <tr style="border-bottom: 1px solid #f1f1f1; transition: background 0.2s;" onmouseover="this.style.background='#fcfcfd'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 15px 20px; font-weight: 700; color: #1a237e;">
+                            #@o.OrderCode
+                        </td>
+                        <td style="padding: 15px 20px; color: #444;">
+                            <div style="display: flex; align-items: center;">
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #d32f2f; margin-right: 10px;"></span>
+                                @o.ConnectionType
+                            </div>
+                        </td>
+                        <td style="padding: 15px 20px; color: #666; font-size: 14px;">
+                            @o.OrderDate.ToString("dd MMM, yyyy")
+                        </td>
+                        <td style="padding: 15px 20px; text-align: center;">
+                            @{
+                                var statusBg = "#eee";
+                                var statusColor = "#666";
+
+                                if (o.Status.ToLower() == "pending") { statusBg = "#fff4e5"; statusColor = "#b76e00"; }
+                                else if (o.Status.ToLower() == "active" || o.Status.ToLower() == "completed") { statusBg = "#e6f4ea"; statusColor = "#1e7e34"; }
+                                else if (o.Status.ToLower() == "cancelled") { statusBg = "#fce8e8"; statusColor = "#d93025"; }
+                            }
+                            <span style="background: @statusBg; color: @statusColor; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase;">
+                                @o.Status
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div style="max-width: 1000px; margin: 20px auto; text-align: center; color: #999; font-size: 13px;">
+        Need help with an order? <a href="#" style="color: #1a237e; text-decoration: none; font-weight: 600;">Contact Support</a>
+    </div>
+</div>

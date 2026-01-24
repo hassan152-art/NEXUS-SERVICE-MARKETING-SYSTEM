@@ -1,0 +1,152 @@
+﻿@model User
+
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa;">
+
+    <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 130px 15px;">
+
+        <div style="margin-bottom: 30px; text-align: center;">
+            <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 800; margin: 0; font-size: 3rem; color: #1a237e;">
+                NEXUSE<span style="color: #d32f2f;">.net</span>
+            </h1>
+            <p style="color: #666; margin-top: 5px; font-weight: 500; letter-spacing: 1px;">SERVICE MARKETING SYSTEM</p>
+        </div>
+
+        <div style="width: 100%; max-width: 450px;">
+            <div style="background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e0e0e0;">
+
+                <div id="headerBar" style="background: #d32f2f; padding: 25px; text-align: center; transition: all 0.4s ease;">
+                    <h3 style="color: white; margin: 0; font-size: 22px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+                        Welcome Back
+                    </h3>
+                </div>
+
+                @* <div style="padding: 30px 40px 0 40px;">
+                    <label style="display: block; margin-bottom: 12px; color: #5f6368; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; text-align: center;">Select Your Portal</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                        <button type="button" onclick="switchRole('user')" id="userBtn"
+                                style="flex: 1; padding: 10px 5px; background: #d32f2f; color: white; border: 1px solid #d32f2f; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                            User
+                        </button>
+                        <button type="button" onclick="switchRole('admin')" id="adminBtn"
+                                style="flex: 1; padding: 10px 5px; background: white; color: #666; border: 1px solid #dcdcdc; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                            Admin
+                        </button>
+                        <button type="button" onclick="switchRole('employee')" id="employeeBtn"
+                                style="flex: 1; padding: 10px 5px; background: white; color: #666; border: 1px solid #dcdcdc; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                            Staff
+                        </button>
+                    </div>
+                </div> *@
+
+                <div style="padding: 20px 40px 40px 40px;">
+                    <form asp-action="Login" method="post">
+
+                        <input type="hidden" name="Role" id="roleInput" value="user" />
+
+                        <div style="margin-bottom: 20px;">
+                            <label asp-for="Email" style="display: block; margin-bottom: 8px; color: #5f6368; font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Email Address</label>
+                            <input asp-for="Email" type="email" id="emailInput" placeholder="Enter User Email"
+                                   style="width: 100%; padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; transition: all 0.3s; outline: none; box-sizing: border-box;"
+                                   onfocus="updateFocus(this, true)" onblur="updateFocus(this, false)" />
+                            <span asp-validation-for="Email" style="color: #d32f2f; font-size: 12px; display: block; margin-top: 5px;"></span>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label asp-for="Password" style="display: block; margin-bottom: 8px; color: #5f6368; font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Password</label>
+                            <input asp-for="Password" type="password" placeholder="••••••••"
+                                   style="width: 100%; padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; transition: all 0.3s; outline: none; box-sizing: border-box;"
+                                   onfocus="updateFocus(this, true)" onblur="updateFocus(this, false)" />
+                            <span asp-validation-for="Password" style="color: #d32f2f; font-size: 12px; display: block; margin-top: 5px;"></span>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <label style="display: flex; align-items: center; color: #666; font-size: 14px; cursor: pointer;">
+                                <input type="checkbox" name="RememberMe" style="margin-right: 8px; cursor: pointer; accent-color: #d32f2f;">
+                                Remember me
+                            </label>
+                            <a href="#" style="color: #1a237e; text-decoration: none; font-size: 13px; font-weight: 600;">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" id="submitBtn"
+                                style="width: 100%; padding: 14px; background: #d32f2f; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;">
+                            Login as User
+                        </button>
+                    </form>
+
+                    <div style="text-align: center; margin-top: 25px; border-top: 1px solid #f1f1f1; padding-top: 20px;">
+                        <span style="color: #666; font-size: 14px;">Accessing first time? </span>
+                        <a asp-controller="Home" asp-action="Register"
+                           style="color: #1a237e; text-decoration: none; font-size: 14px; font-weight: 700;">
+                            Create Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let accentColor = '#d32f2f'; // Default User Red
+
+        function switchRole(role) {
+            document.getElementById('roleInput').value = role;
+
+            const btns = {
+                user: document.getElementById('userBtn'),
+                admin: document.getElementById('adminBtn'),
+                employee: document.getElementById('employeeBtn')
+            };
+
+            const header = document.getElementById('headerBar');
+            const submitBtn = document.getElementById('submitBtn');
+            const emailInput = document.getElementById('emailInput');
+
+            // Reset Styles
+            Object.values(btns).forEach(btn => {
+                btn.style.background = 'white';
+                btn.style.color = '#666';
+                btn.style.borderColor = '#dcdcdc';
+            });
+
+            if (role === 'user') {
+                accentColor = '#d32f2f';
+                btns.user.style.background = accentColor;
+                btns.user.style.color = 'white';
+                btns.user.style.borderColor = accentColor;
+                submitBtn.textContent = 'Login as User';
+                emailInput.placeholder = 'Enter User Email';
+            } else if (role === 'admin') {
+                accentColor = '#1a237e'; // Navy Blue for Admin
+                btns.admin.style.background = accentColor;
+                btns.admin.style.color = 'white';
+                btns.admin.style.borderColor = accentColor;
+                submitBtn.textContent = 'Login as Admin';
+                emailInput.placeholder = 'admin@nexuse.net';
+            } else if (role === 'employee') {
+                accentColor = '#2e7d32'; // Green for Employee
+                btns.employee.style.background = accentColor;
+                btns.employee.style.color = 'white';
+                btns.employee.style.borderColor = accentColor;
+                submitBtn.textContent = 'Login as Employee';
+                emailInput.placeholder = 'staff@nexuse.net';
+            }
+
+            header.style.background = accentColor;
+            submitBtn.style.background = accentColor;
+        }
+
+        function updateFocus(el, isFocus) {
+            if (isFocus) {
+                el.style.borderColor = accentColor;
+                el.style.boxShadow = `0 0 0 3px ${accentColor}1A`;
+            } else {
+                el.style.borderColor = '#dcdcdc';
+                el.style.boxShadow = 'none';
+            }
+        }
+    </script>
+</body>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

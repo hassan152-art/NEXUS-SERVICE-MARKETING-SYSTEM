@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/Views/Shared/_Accounts_Layout.cshtml";
+}
+@model Payment
+
+<h3 class="text-danger">❌ Delete Payment</h3>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete this payment?
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Amount</th>
+        <td>@Model.PaidAmount</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>@Model.PaymentMethod</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>@Model.Status</td>
+    </tr>
+</table>
+
+<form asp-action="DeletePayment" method="post">
+    <input type="hidden" asp-for="PaymentId" />
+
+    <button type="submit" class="btn btn-danger">Delete</button>
+
+    <a asp-action="AllPayments"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+</form>

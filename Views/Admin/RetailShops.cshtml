@@ -1,0 +1,203 @@
+﻿@model List<RetailShop>
+@{
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+    ViewData["Title"] = "Retail Shops Management";
+}
+
+<style>
+    /* Card Container */
+    .shop-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        margin-top: 20px;
+    }
+
+    /* Header Styling */
+    .card-header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    /* Table Styling */
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #5f6368;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.8px;
+        padding: 15px 25px;
+        border: none;
+    }
+
+    .table tbody td {
+        padding: 18px 25px;
+        vertical-align: middle;
+        color: #333;
+        border-bottom: 1px solid #f8f9fa;
+    }
+
+    /* Shop Icon/Avatar */
+    .shop-icon {
+        width: 40px;
+        height: 40px;
+        background: #fff0f0;
+        color: #d32f2f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+
+    /* City Badge */
+    .city-badge {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* Action Buttons */
+    .btn-action {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+        border: 1px solid #eee;
+        background: white;
+        text-decoration: none;
+    }
+
+    .btn-edit {
+        color: #f39c12;
+    }
+
+        .btn-edit:hover {
+            background: #f39c12;
+            color: white;
+            border-color: #f39c12;
+        }
+
+    .btn-delete {
+        color: #d32f2f;
+    }
+
+        .btn-delete:hover {
+            background: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+    .search-box {
+        position: relative;
+        width: 300px;
+    }
+
+        .search-box input {
+            padding-left: 35px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 1px solid #eee;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            color: #aaa;
+        }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0">Retail Shops</h3>
+            <p class="text-muted small mb-0">Manage outlet locations and contact details</p>
+        </div>
+        <a href="/Admin/AddRetailShop" class="btn btn-red px-4">
+            <i class="fa-solid fa-store me-2"></i> Add Retail Shop
+        </a>
+    </div>
+
+    <div class="shop-card">
+        <div class="card-header-flex">
+            <h5 class="mb-0 fw-bold text-secondary">Location Directory</h5>
+
+            <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control border-0" placeholder="Search by city or shop name...">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Shop Name</th>
+                        <th>Location</th>
+                        <th>Address</th>
+                        <th>Contact</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="shop-icon">
+                                        <i class="fa-solid fa-shop"></i>
+                                    </div>
+                                    <span class="fw-bold text-dark">@s.ShopName</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="city-badge">
+                                    <i class="fa-solid fa-location-dot"></i> @s.City
+                                </span>
+                            </td>
+                            <td>
+                                <div class="text-muted small" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    @s.Address
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-dark">
+                                    <i class="fa-solid fa-phone text-muted me-2 small"></i>@s.ContactNo
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <a href="/Admin/EditRetailShop/@s.RetailShopId" class="btn-action btn-edit" title="Edit Shop">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+
+                                <a href="/Admin/DeleteRetailShop/@s.RetailShopId"
+                                   class="btn-action btn-delete"
+                                   onclick="return confirm('Remove this shop location?')"
+                                   title="Delete Shop">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
