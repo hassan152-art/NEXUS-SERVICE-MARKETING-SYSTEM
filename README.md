@@ -1,1 +1,2 @@
-# NEXUS-SERVICE-MARKETING-SYSTEM
+NEXUS Service Marketing System is a role-based ISP management and service marketing web application developed using ASP.NET Core MVC and Entity Framework Core.
+This system is designed to manage users, employees, vendors, service plans, equipment, packages, and billing in a centralized platform.
